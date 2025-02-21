@@ -23,7 +23,7 @@ export default function Topbar() {
                     <span>We ship worldwide! - Fast and reliable shipping</span>
                 </div>
                 <div className="text-sm hidden md:block flex-grow-0">
-                    <a href="tel:+233209237909" className=':hover-gray-300'>
+                    <a href="tel:+233209237909" className='hover:text-gray-300'>
                         <span>+(233) 20 923 7909 </span>
                     </a>
                 </div>

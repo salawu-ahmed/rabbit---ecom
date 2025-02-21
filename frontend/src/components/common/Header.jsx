@@ -4,11 +4,11 @@ import Navbar from './Navbar'
 
 export default function Header() {
   return (
-    <div>
+    <header className='border-b border-b-gray-200'>
       {/* top bar */}
       <Topbar />
       {/* Navbar */}
       <Navbar />
-    </div>
+    </header>
   )
 }

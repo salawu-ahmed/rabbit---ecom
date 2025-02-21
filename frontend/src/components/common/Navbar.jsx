@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router'
 import { HiOutlineUser, HiOutlineShoppingBag, HiMenu } from 'react-icons/hi'
 import SearchBar from './SearchBar'
+import CartDrawer from './CartDrawer'
 
 export default function Navbar() {
+    const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
+    function toggleCartDrawer () {
+        setIsCartDrawerOpen(prev => !prev)
+    }
+   
     return (
         <>
             <nav className="container flex items-center justify-between py-4 px-6">
                 {/* logo - text */}
                 <div>
-                    <Link to='/' className='text-2xl font-medium'>Rabbit</Link>
+                    <Link to='/' className='text-2xl font-bold'>Rabbit</Link>
                 </div>
 
 
@@ -35,7 +41,10 @@ export default function Navbar() {
                     <Link className='hover:text-black'>
                         <HiOutlineUser size={25} className='text-gray-700' />
                     </Link>
-                    <button className='relative'>
+                    <button 
+                    className='relative'
+                    onClick={toggleCartDrawer}
+                    >
                         <HiOutlineShoppingBag size={25} />
                         <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded-full px-2 py-0.5'>4</span>
                     </button>
@@ -50,6 +59,7 @@ export default function Navbar() {
                     </button>
                 </div>
             </nav>
+            <CartDrawer onClose={toggleCartDrawer} isOpen={isCartDrawerOpen}/>
         </>
     )
 }
