@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
+import CartContents from '../cart/CartContents'
 
 export default function ({ isOpen, onClose, ref }) {
 
@@ -15,10 +16,10 @@ export default function ({ isOpen, onClose, ref }) {
             </div>
 
             {/* Cart content with scrollable area */}
-            <div className="flex flex-grow p-4 overflow-y-auto">
+            <div className="flex-grow p-4 overflow-y-auto">
                 <h2 className='font-semibold mb-4 font-xl'>Your Items</h2>
+                <CartContents />
                 {/* cart content */}
-                <div></div>
             </div>
 
             {/* checkout button */}

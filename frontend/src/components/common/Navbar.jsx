@@ -10,6 +10,7 @@ export default function Navbar() {
 
     // states
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
     const handleClickOutsideCart = useCallback(function handleClickOutsideCart(e) {
         if(isCartDrawerOpen && !cartDrawerRef.current.contains(e.target)){
@@ -28,6 +29,9 @@ export default function Navbar() {
 
     function toggleCartDrawer () {
         setIsCartDrawerOpen(prev => !prev)
+    }
+    function toggleMobileNav () {
+        setIsMobileNavOpen(prev => !prev)
     }
 
     // function handleClickOutsideCart (e) {
@@ -90,6 +94,8 @@ export default function Navbar() {
                 </div>
             </nav>
             <CartDrawer onClose={toggleCartDrawer} isOpen={isCartDrawerOpen} ref={cartDrawerRef}/>
+
+            
         </>
     )
 }
