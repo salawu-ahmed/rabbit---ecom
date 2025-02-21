@@ -35,9 +35,9 @@ export default function Navbar() {
                     <Link className='hover:text-black'>
                         <HiOutlineUser size={25} className='text-gray-700' />
                     </Link>
-                    <button>
+                    <button className='relative'>
                         <HiOutlineShoppingBag size={25} />
-                        <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded px-2 py-0.5'>4</span>
+                        <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded-full px-2 py-0.5'>4</span>
                     </button>
 
                     {/* Search componnet */}
