@@ -44,6 +44,7 @@ export default function SearchBar() {
                         <button
                             type='button'
                             className='absolute top-0 right-4 transform -translate-y-1/2 text-gray-600 hover:text-gray-800'
+                            onClick={() => setIsOpen((prev) => !prev)}
                         >
                             <HiMiniXMark size={25} />
                         </button>

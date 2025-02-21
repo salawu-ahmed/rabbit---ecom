@@ -1,14 +1,44 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { HiOutlineUser, HiOutlineShoppingBag, HiMenu } from 'react-icons/hi'
 import SearchBar from './SearchBar'
 import CartDrawer from './CartDrawer'
 
 export default function Navbar() {
+    // refs
+    const cartDrawerRef = useRef()
+
+    // states
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
+
+    const handleClickOutsideCart = useCallback(function handleClickOutsideCart(e) {
+        if(isCartDrawerOpen && !cartDrawerRef.current.contains(e.target)){
+            setIsCartDrawerOpen(false)
+        }
+        console.log('You clicked me');    
+    }, [isCartDrawerOpen])
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutsideCart)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutsideCart)
+        }
+    }, [handleClickOutsideCart])
+
+
     function toggleCartDrawer () {
         setIsCartDrawerOpen(prev => !prev)
     }
+
+    // function handleClickOutsideCart (e) {
+    //     if(isCartDrawerOpen && !cartDrawerRef.current.contains(e.target)){
+    //         setIsCartDrawerOpen(false)
+    //     }
+    //     console.log('You clicked me');  
+    // } 
+  
+
+
    
     return (
         <>
@@ -59,7 +89,7 @@ export default function Navbar() {
                     </button>
                 </div>
             </nav>
-            <CartDrawer onClose={toggleCartDrawer} isOpen={isCartDrawerOpen}/>
+            <CartDrawer onClose={toggleCartDrawer} isOpen={isCartDrawerOpen} ref={cartDrawerRef}/>
         </>
     )
 }
