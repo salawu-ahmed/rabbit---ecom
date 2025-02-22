@@ -107,12 +107,6 @@ export default function NewArrivals() {
             setCanScrollLeft(() => leftScroll > 0)
             setCanScrollRight(() => rightScrollable)
         }
-        console.log({
-            scrollLeft: container.scrollLeft,
-            clientWidth: container.clientWidth,
-            scrollWidth: container.scrollWidth
-        });
-
     }
 
     function handleMouseDown(e) {

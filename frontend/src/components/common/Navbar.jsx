@@ -42,7 +42,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="container flex items-center justify-between py-4 px-6">
+            <nav className="container flex items-center justify-between py-4 px-6 ">
                 {/* logo - text */}
                 <div>
                     <Link to='/' className='text-2xl font-bold'>Rabbit</Link>
