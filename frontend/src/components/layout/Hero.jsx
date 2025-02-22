@@ -10,9 +10,9 @@ function Hero() {
         alt="Rabbit"
         className='w-full h-[400px] md:h-[600px] lg:h-[750px] object-cover'
       />
-      <div className="absolute inset-0 bg-black/0 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
         <div className="text-center text-white p-6">
-          <h1 className="text-4xl md:text-9xl font-bold tracking-tighter">Vacation <br /> Ready?</h1>
+          <h1 className="text-4xl md:text-9xl font-bold tracking-tighter mb-4">Vacation <br /> Ready?</h1>
           <p className="text-sm mb-6 tracking-tighter md:text-lg">
             Expolore our vacation ready outfits with fast worldwide shipping.
           </p>
