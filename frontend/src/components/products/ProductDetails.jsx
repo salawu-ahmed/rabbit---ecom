@@ -27,6 +27,7 @@ export default function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [quantity, setQuantity] = useState(1)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   useEffect(() => {
     if (selectedProduct?.images?.length > 0) {
@@ -101,11 +102,12 @@ export default function ProductDetails() {
                     {
                       selectedProduct.colors.map((color) => {
                         return <button
-                          className="w-8 h-8 rounded-full border"
+                          className={`w-8 h-8 rounded-full border ${selectedColor === color ? 'border-4 border-black' : 'border-gray-300'}`}
                           style={{
                             backgroundColor: color.toLowerCase(),
                             filter: 'brightness(0.5'
                           }}
+                          onClick={() => setSelectedColor(() => color)}
                         >
                         </button>
                       })}
