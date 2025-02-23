@@ -24,6 +24,9 @@ const selectedProduct = {
 
 export default function ProductDetails() {
   const [mainImage, setMainImage] = useState('')
+  const [selectedSize, setSelectedSize] = useState('')
+  const [selectedColor, setSelectedColor] = useState('')
+  const [quantity, setQuantity] = useState(1)
 
   useEffect(() => {
     if (selectedProduct?.images?.length > 0) {
