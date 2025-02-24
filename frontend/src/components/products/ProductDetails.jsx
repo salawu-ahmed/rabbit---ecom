@@ -30,7 +30,7 @@ const similarProducts = [
     name: 'Product 1',
     price: 100,
     images: [
-      {url: 'https://picsum.photos/500/500?random=1'}
+      { url: 'https://picsum.photos/500/500?random=1' }
     ],
   },
   {
@@ -38,7 +38,7 @@ const similarProducts = [
     name: 'Product 2',
     price: 100,
     images: [
-      {url: 'https://picsum.photos/500/500?random=2'}
+      { url: 'https://picsum.photos/500/500?random=2' }
     ],
   },
   {
@@ -46,7 +46,7 @@ const similarProducts = [
     name: 'Product 3',
     price: 100,
     images: [
-      {url: 'https://picsum.photos/500/500?random=3'}
+      { url: 'https://picsum.photos/500/500?random=3' }
     ],
   },
   {
@@ -54,7 +54,7 @@ const similarProducts = [
     name: 'Product 4',
     price: 100,
     images: [
-      {url: 'https://picsum.photos/500/500?random=4'}
+      { url: 'https://picsum.photos/500/500?random=4' }
     ],
   },
 ]
@@ -95,7 +95,7 @@ export default function ProductDetails() {
 
   return (
     <div className='p-6'>
-      <div className="max-w6xl mx-auto bg-white p-8 rounded-lg">
+      <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg">
         <div className="flex flex-col md:flex-row">
           {/* left thumbnails */}
           <div
@@ -141,88 +141,88 @@ export default function ProductDetails() {
                 })
               }
             </div>
+          </div>
 
-            {/* right side  */}
-            <div className='md:w-1/2 md:ml-10'>
-              <h1 className="text-2xl md:text-3xl font-semibold mb-2">
-                {selectedProduct.name}
-              </h1>
-              <p className="text-lg text-gray-600 mb-1 line-through">
-                {selectedProduct?.originalPrice && `${selectedProduct.originalPrice}`}
-              </p>
-              <p className="text-xl text-gray-400 mb-2">
-                $ {selectedProduct.price}
-              </p>
-              <p className="text-gray-600 mb-4">{selectedProduct.description}</p>
-              <div className="mb-4">
-                <p className="text-gray-700">
-                  Color: </p>
-                  <div className="flex gap-2 mt-2">
-                    {
-                      selectedProduct.colors.map((color,index) => {
-                        return <button
-                          className={`w-8 h-8 rounded-full border ${selectedColor === color ? 'border-4 border-black' : 'border-gray-300'}`}
-                          style={{
-                            backgroundColor: color.toLowerCase(),
-                            filter: 'brightness(0.5'
-                          }}
-                          onClick={() => setSelectedColor(() => color)}
-                          key={index}
-                        >
-                        </button>
-                      })}
-                  </div>
-              </div>
-
-
-              <div className="mb-4">
-                <div className="text-gray-700">Size: </div>
-                <div className="flex gap-2 mt-2">
-                  {selectedProduct.sizes.map((size, index) => {
+          {/* right side  */}
+          <div className='md:w-1/2 md:ml-10'>
+            <h1 className="text-2xl md:text-3xl font-semibold mb-2">
+              {selectedProduct.name}
+            </h1>
+            <p className="text-lg text-gray-600 mb-1 line-through">
+              {selectedProduct?.originalPrice && `${selectedProduct.originalPrice}`}
+            </p>
+            <p className="text-xl text-gray-400 mb-2">
+              $ {selectedProduct.price}
+            </p>
+            <p className="text-gray-600 mb-4">{selectedProduct.description}</p>
+            <div className="mb-4">
+              <p className="text-gray-700">
+                Color: </p>
+              <div className="flex gap-2 mt-2">
+                {
+                  selectedProduct.colors.map((color, index) => {
                     return <button
+                      className={`w-8 h-8 rounded-full border ${selectedColor === color ? 'border-4 border-black' : 'border-gray-300'}`}
+                      style={{
+                        backgroundColor: color.toLowerCase(),
+                        filter: 'brightness(0.5'
+                      }}
+                      onClick={() => setSelectedColor(() => color)}
                       key={index}
-                      className={`py-2 border rounded px-4 ${selectedSize === size ? 'bg-black text-white' : ''}`}
-                      onClick={() => setSelectedSize(() => size)}
-                    >{size} </button>
+                    >
+                    </button>
                   })}
-                </div>
               </div>
+            </div>
 
-              <div className="mb-6">
-                <p className="text-gray-700">Quantity:</p>
-                <div className="flex items-center space-x-4 mt-2">
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded text-lg"
-                    onClick={() => handleQuantityChange('decrease')}
-                  >-</button>
-                  <span className="text-lg">{quantity}</span>
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded text-lg"
-                    onClick={() => handleQuantityChange('increase')}
-                  >+</button>
-                </div>
+
+            <div className="mb-4">
+              <div className="text-gray-700">Size: </div>
+              <div className="flex gap-2 mt-2">
+                {selectedProduct.sizes.map((size, index) => {
+                  return <button
+                    key={index}
+                    className={`py-2 border rounded px-4 ${selectedSize === size ? 'bg-black text-white' : ''}`}
+                    onClick={() => setSelectedSize(() => size)}
+                  >{size} </button>
+                })}
               </div>
+            </div>
 
-              <button 
+            <div className="mb-6">
+              <p className="text-gray-700">Quantity:</p>
+              <div className="flex items-center space-x-4 mt-2">
+                <button
+                  className="px-2 py-1 bg-gray-200 rounded text-lg"
+                  onClick={() => handleQuantityChange('decrease')}
+                >-</button>
+                <span className="text-lg">{quantity}</span>
+                <button
+                  className="px-2 py-1 bg-gray-200 rounded text-lg"
+                  onClick={() => handleQuantityChange('increase')}
+                >+</button>
+              </div>
+            </div>
+
+            <button
               className={`bg-black text-white py-2 rounded w-full mb-4 ${isButtonDisabled ? 'bg-gray-500' : ''}`}
               onClick={handleAddToCart}
-              >{isButtonDisabled ? 'Adding...' : 'Add to Cart'}</button>
+            >{isButtonDisabled ? 'Adding...' : 'Add to Cart'}</button>
 
-              <div className="mt-10 text-gray-700">
-                <h3 className="text-xl font-bold mb-4">Characteristics:</h3>
-                <table className="w-full text-gray-600 text-left text-sm">
-                  <tbody>
-                    <tr>
-                      <td className='py-1'>Brand</td>
-                      <td className='py-1'>{selectedProduct.brand}</td>
-                    </tr>
-                    <tr>
-                      <td className='py-1'>Material</td>
-                      <td className='py-1'>{selectedProduct.material}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className="mt-10 text-gray-700">
+              <h3 className="text-xl font-bold mb-4">Characteristics:</h3>
+              <table className="w-full text-gray-600 text-left text-sm">
+                <tbody>
+                  <tr>
+                    <td className='py-1'>Brand</td>
+                    <td className='py-1'>{selectedProduct.brand}</td>
+                  </tr>
+                  <tr>
+                    <td className='py-1'>Material</td>
+                    <td className='py-1'>{selectedProduct.material}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -231,9 +231,9 @@ export default function ProductDetails() {
 
         <div className="mt-20">
           <h2 className="font-medium text-2xl mb-4 text-center capitalize">
-            You May also like 
+            You May also like
           </h2>
-          <ProductGrid products={similarProducts}/>
+          <ProductGrid products={similarProducts} />
         </div>
       </div>
     </div>
