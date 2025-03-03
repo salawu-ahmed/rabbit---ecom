@@ -4,6 +4,8 @@ import GenderCollection from '../components/products/GenderCollection'
 import NewArrivals from '../components/products/NewArrivals'
 import ProductDetails from '../components/products/ProductDetails'
 import ProductGrid from '../components/products/ProductGrid'
+import FeaturedCollection from '../components/products/FeaturedCollection'
+import FeaturesSection from '../components/products/FeaturesSection'
 
 function Home() {
   const placeholderProducts = [
@@ -12,7 +14,7 @@ function Home() {
       name: 'Product 1',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=1'}
+        { url: 'https://picsum.photos/500/500?random=1' }
       ],
     },
     {
@@ -20,7 +22,7 @@ function Home() {
       name: 'Product 2',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=2'}
+        { url: 'https://picsum.photos/500/500?random=2' }
       ],
     },
     {
@@ -28,7 +30,7 @@ function Home() {
       name: 'Product 3',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=3'}
+        { url: 'https://picsum.photos/500/500?random=3' }
       ],
     },
     {
@@ -36,7 +38,7 @@ function Home() {
       name: 'Product 4',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=4'}
+        { url: 'https://picsum.photos/500/500?random=4' }
       ],
     },
     {
@@ -44,7 +46,7 @@ function Home() {
       name: 'Product 5',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=5'}
+        { url: 'https://picsum.photos/500/500?random=5' }
       ],
     },
     {
@@ -52,7 +54,7 @@ function Home() {
       name: 'Product 6',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=6'}
+        { url: 'https://picsum.photos/500/500?random=6' }
       ],
     },
     {
@@ -60,7 +62,7 @@ function Home() {
       name: 'Product 7',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=7'}
+        { url: 'https://picsum.photos/500/500?random=7' }
       ],
     },
     {
@@ -68,7 +70,7 @@ function Home() {
       name: 'Product 8',
       price: 100,
       images: [
-        {url: 'https://picsum.photos/500/500?random=8'}
+        { url: 'https://picsum.photos/500/500?random=8' }
       ],
     },
   ]
@@ -83,11 +85,13 @@ function Home() {
       </h2>
       <ProductDetails />
       <div className="container mx-auto">
-          <h2 className="text-3xl text-center font-bold mb-4">
-            Top Wears For Women
-          </h2>
-          <ProductGrid products={placeholderProducts}/>
-        </div>
+        <h2 className="text-3xl text-center font-bold mb-4">
+          Top Wears For Women
+        </h2>
+        <ProductGrid products={placeholderProducts} />
+      </div>
+      <FeaturedCollection />
+      <FeaturesSection />
     </div>
   )
 }
