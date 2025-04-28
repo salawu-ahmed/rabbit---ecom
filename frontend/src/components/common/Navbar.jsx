@@ -52,7 +52,7 @@ export default function Navbar() {
                 {/* center */}
                 <div className='hidden md:flex space-x-6 items-center justify-between'>
                     <div className="hidden md:flex space-x-6">
-                        <Link to='#' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for men</Link>
+                        <Link to='/collections/all' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for men</Link>
                     </div>
                     <div className="hidden md:flex space-x-6">
                         <Link to='#' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for women</Link>
