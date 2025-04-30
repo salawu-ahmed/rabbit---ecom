@@ -8,8 +8,8 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log('log in successful', {password, email});
-        
     }
+    
     return (
         <div className='flex'>
             <div className="w-full flex md:w-1/2 flex-col justify-center items-center p-8 md:p-12">

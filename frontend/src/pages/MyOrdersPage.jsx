@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 
-function MyOrderPage() {
+function MyOrdersPage() {
     const [orders, setOrders] = useState([])
+    const navigate = useNavigate()
+    function handleRowClick (orderId) {
+        navigate(`/order/${orderId}`)
+    }
 
     useEffect(() => {
         // simulate fetching of orders
@@ -63,7 +68,11 @@ function MyOrderPage() {
                         {
                             orders.length > 0 ? (
                                 orders.map((order) => (
-                                    <tr key={order._id} className='cursor-pointer border-b hover:border-gray-50'>
+                                    <tr 
+                                    key={order._id} 
+                                    onClick={() => handleRowClick(order._id)}
+                                    className='cursor-pointer border-b hover:border-gray-50'
+                                    >
                                         <td className='py-2 px-2 sm:py-4 sm:px-4'>
                                             <img src={order.orderItems.image} alt="order image" className='w-10 h-10 object-cover rounded-full sm:w-12 sm:h:12' />
                                         </td>
@@ -108,4 +117,4 @@ function MyOrderPage() {
     )
 }
 
-export default MyOrderPage
+export default MyOrdersPage
