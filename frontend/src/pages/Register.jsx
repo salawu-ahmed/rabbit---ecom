@@ -8,9 +8,9 @@ function Register() {
     const [name, setName] = useState('')
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('user successfully registered', {name, email, password});
-        
+        console.log('user successfully registered', { name, email, password });
     }
+
     return (
         <div className='flex'>
             <div className="w-full flex md:w-1/2 flex-col justify-center items-center p-8 md:p-12">
@@ -66,19 +66,19 @@ function Register() {
                             placeholder='Enter your password'
                             className='w-full rounded border p-2'
                         />
-                        </div>
-                        <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign up</button>
-                        <p className="mt-6 text-center text-sm">
-                            Already have an account?
-                            <Link to='/login' className='text-blue-500'>Login</Link>
-                        </p>
+                    </div>
+                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign up</button>
+                    <p className="mt-6 text-center text-sm">
+                        Already have an account?
+                        <Link to='/login' className='text-blue-500'>Login</Link>
+                    </p>
                 </form>
             </div>
 
             <div className="hidden md:block w-1/2 bg-gray-800">
-            <div className="h-full flex flex-col justify-center items-center">
-                <img src={register} alt="Login to account" className='h-[750px] w-full object-center' />
-            </div>
+                <div className="h-full flex flex-col justify-center items-center">
+                    <img src={register} alt="Login to account" className='h-[750px] w-full object-center' />
+                </div>
             </div>
         </div>
     )

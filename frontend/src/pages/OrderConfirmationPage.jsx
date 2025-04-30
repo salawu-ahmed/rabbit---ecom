@@ -73,11 +73,29 @@ function OrderConfirmationPage() {
                                         <p className="text-sm text-gray-500">{item.quantity}</p>
                                     </div>
                                 </div>
-                            ))
-                        }
+                            ))}
+                    </div>
+                    {/* Payment and Delivery Info */}
+                    <div className="grid grid-cols-2 gap-8">
+                        <div>
+                            <h4 className="text-lg font-semibold mb-2">Payment</h4>
+                            <p className="text-gray-600">Paypal</p>
+                        </div>
+                        {/* Delivery info */}
+                        <div>
+                            <h4 className="text-lg font-semibold mb-2">Shipping Address</h4>
+                            <p className="text-gray-600">
+                                {checkout.shippingAddress.address}
+                            </p>
+                            <p className="text-gray-600">
+                                {checkout.shippingAddress.city},
+                                {checkout.shippingAddress.country}
+                            </p>
+                        </div>
                     </div>
                 </div>
             }
+
         </div>
     )
 }
