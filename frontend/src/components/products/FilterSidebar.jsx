@@ -80,7 +80,13 @@ function FilterSidebar() {
         navigate(`?${params.toString()}`) // this will navigate you from the current url to baseURL/?params ie ?category=Bottom+Wear&size=XS%2CS comma is represented as %2C
     }
 
-    
+    const handlePriceChange = (e) => {
+        const newPrice = e.target.value
+        setPriceRange([0, newPrice])
+        const newFilters = {...filters, minPrice: 0, maxPrice: newPrice}
+        setFilters(newFilters)
+        updateURLParams(newFilters)
+    }
 
     return (
         <div className='p-4'>
@@ -241,6 +247,8 @@ function FilterSidebar() {
                     id=""
                     min={0}
                     max={100}
+                    onChange={handlePriceChange}
+                    value={priceRange[1]}
                     className='w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer'
                 />
                 <div className="flex mt-2 justify-between text-gray-600">

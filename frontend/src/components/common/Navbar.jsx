@@ -68,7 +68,7 @@ export default function Navbar() {
 
                 {/* right */}
                 <div className="flex items-center space-x-4">
-                    <Link className='hover:text-black'>
+                    <Link className='hover:text-black' to='/profile'>
                         <HiOutlineUser size={25} className='text-gray-700' />
                     </Link>
                     <button
