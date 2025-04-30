@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import CartContents from '../cart/CartContents'
+import { useNavigate } from 'react-router'
 
 export default function ({ isOpen, onClose, ref }) {
+    const navigate = useNavigate()
+    function handleCheckout () {
+        onClose()
+        navigate('/checkout')
+    }
 
     return (
         <div
@@ -24,7 +30,9 @@ export default function ({ isOpen, onClose, ref }) {
 
             {/* checkout button */}
             <div className="p-4 bg-white sticky bottom-0">
-                <button className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition'>Checkout</button>
+                <button 
+                className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition'
+                onClick={handleCheckout}>Checkout</button>
                 <p className='text-sm text-gray-400 mt-2 text-center tracking-tighter '>Shipping taxes, Discount calculated at checkout</p>
             </div>
         </div>
