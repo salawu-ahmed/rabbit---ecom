@@ -23,7 +23,7 @@ const cart = {
 }
 function Checkout() {
     const navigate = useNavigate()
-    const [checkoutId,setChekoutId] = useState(null)
+    const [checkoutId, setChekoutId] = useState(null)
     const [shippingAdress, setShippingAddress] = useState({
         firstName: '',
         lastName: '',
@@ -34,12 +34,12 @@ function Checkout() {
         phoneNumber: ''
     })
 
-    function handleCreateCheckout (e) {
+    function handleCreateCheckout(e) {
         e.preventDefault()
         setChekoutId(123)
     }
 
-    function handlePaymentSuccess (details) {
+    function handlePaymentSuccess(details) {
         console.log(details);
         navigate('/order-confirmation')
     }
@@ -203,16 +203,16 @@ function Checkout() {
                         />
                     </div>
                     <div className="mb-6">
-                        {!checkoutId? (
+                        {!checkoutId ? (
                             <button type='submit' className='w-full bg-black text-white py-3 rounded'>Continue to Payment</button>
                         ) : (
                             <div>
                                 <h3 className="text-lg mb-4">Pay with Paypal</h3>
                                 {/* paypal component */}
-                                <PaypalButton 
-                                amount={100} 
-                                onSuccess={handlePaymentSuccess} 
-                                onError={(err) => alert('Payment Failed. Try again.')}
+                                <PaypalButton
+                                    amount={100}
+                                    onSuccess={handlePaymentSuccess}
+                                    onError={(err) => alert('Payment Failed. Try again.')}
                                 />
                             </div>
                         )
@@ -221,6 +221,42 @@ function Checkout() {
                 </form>
             </div>
 
+            {/* Right side */}
+            <div className="bg-gray-100 p-6 rounded-lg">
+                <h3 className="text-lg mb-4">Order Summary</h3>
+                <div className="border-t py-4 mb-4">
+                    {cart.products.map((product, index) => (
+                        <div key={index} className='flex items-start justify-between py-2 border-b'>
+                            <div className="flex items-start">
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className='w-full h-24 object-cover mr-4'
+                                />
+                                <div>
+                                    <h3 className="text-md">{product.name}</h3>
+                                    <p className="text-gray-50">Size: {product.size}</p>
+                                    <p className="text-gray-50">Color: {product.color}</p>
+                                </div>
+                            </div>
+                            <p className="text-xl">${product.price?.toLocaleString()}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex justify-between items-center text-lg mb-4">
+                    <p>Subtotal</p>
+                    <p>${cart.totalPrice?.toLocaleString()}</p>
+                </div>
+                <div className="flex justify-between items-center text-lg">
+                    <p>Shipping</p>
+                    <p>Free</p>
+                    <p>${cart.totalPrice?.toLocaleString()}</p>
+                </div>
+                <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
+                    <p>Total</p>
+                    <p>${cart.totalPrice?.toLocaleString()}</p>
+                </div>
+            </div>
         </div>
     )
 }
