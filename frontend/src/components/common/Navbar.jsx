@@ -68,6 +68,9 @@ export default function Navbar() {
 
                 {/* right */}
                 <div className="flex items-center space-x-4">
+                    <Link to='/admin' className='rounded block bg-black px-2 text-sm text-white'>
+                        admin
+                    </Link>
                     <Link className='hover:text-black' to='/profile'>
                         <HiOutlineUser size={25} className='text-gray-700' />
                     </Link>
