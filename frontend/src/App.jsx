@@ -12,11 +12,13 @@ import Checkout from './components/cart/Checkout'
 import OrderConfirmationPage from './pages/OrderConfirmationPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
 import MyOrdersPage from './pages/MyOrdersPage'
+import AdminLayout from './components/admin/AdminLayout'
+import AdminHomePage from './pages/AdminHomePage'
 
 export default function App() {
   return (
     <BrowserRouter>
-    <Toaster position='top-right' />
+      <Toaster position='top-right' />
       {/* 
     www.rabbit.com/home  
     www.rabbit.com/products  
@@ -25,18 +27,21 @@ export default function App() {
       <Routes>
         <Route path='/' element={<UserLayout />}>
           <Route index element={<Home />} />
-          <Route path='login' element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
-          <Route path='profile' element={<Profile/>}/>
-          <Route path='collections/:collection' element={<CollectionPage/>}/>
-          <Route path='product/:id' element={<ProductDetails/>}/>
-          <Route path='checkout' element={<Checkout/>}/>
-          <Route path='order-confirmation' element={<OrderConfirmationPage/>}/>
-          <Route path='order/:id' element={<OrderDetailsPage />}/>
-          <Route path='my-orders' element={<MyOrdersPage />}/>
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+          <Route path='profile' element={<Profile />} />
+          <Route path='collections/:collection' element={<CollectionPage />} />
+          <Route path='product/:id' element={<ProductDetails />} />
+          <Route path='checkout' element={<Checkout />} />
+          <Route path='order-confirmation' element={<OrderConfirmationPage />} />
+          <Route path='order/:id' element={<OrderDetailsPage />} />
+          <Route path='my-orders' element={<MyOrdersPage />} />
         </Route>
         {/* User Routes */}
         {/* Admin Routes */}
+        <Route path='/admin' element={<AdminLayout />}>
+          <Route index element={<AdminHomePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
