@@ -14,6 +14,14 @@ I have learnt to use useEffect hook to create mock data when building. This is e
 #### Building Forms.
 Building forms can sometimes be tricky for me. In this project I have learnt to stick to a simple approach of using divs to wrap form elements and to not shy away from using grid to simply align elements. Flexbox is not the holy grail. I can use a grid for just two columns. It doesnt have to always be flexbox.
 
+#### Designing Schemas
+From this tutorial I have learnt an approach to designing my schemas. For example at the 08:06h mark 
+he presents a table for the schema of the products. I like how I am able to see all the details of the product schema without having to write any code. I think this is brilliant. The table presented the attribute of the model, the type of the attribute ie string, number or enums. then the table shows whether it is mandatory or optional or any other thing that needs to be done.
+
+#### Designing routes
+I really like how he approach creating the routes for the product model as well. he first list 
+all the routes he has to create. I think this is incredible. It helps put the backend into perspective.
+
 ## Todos
 #### Dates 
 I have realised that working with dates is going to be a common thing when working with appplications hence I am going to spend sometime reading on the javascript date object and build a few projects around it.
@@ -29,3 +37,7 @@ Find out what global search is and implement it in the project
 
 #### Confirmation Emails
 Try implementing com=nfirmation emails in the project.
+
+#### Reading 
+Read more on the packages used in the project. Make simple notes on them for reference later on.
+Nothing detailed, just simple notes on what they do and the key features
