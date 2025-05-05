@@ -1,4 +1,4 @@
-const mongoose = require('moongoose')
+const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const productSchema = new Schema({
@@ -44,7 +44,7 @@ const productSchema = new Schema({
         required: true
     },
     collections: {
-        typoe: String,
+        type: String,
         required: true
     },
     material: {
@@ -86,7 +86,7 @@ const productSchema = new Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'userSchema',
         required: true,
     },
     metaTitle: {
@@ -110,4 +110,4 @@ const productSchema = new Schema({
     { timestamps: true }
 )
 
-modoule.exports = mongoose.model('Product', productSchema)
+module.exports = mongoose.model('Product', productSchema)
