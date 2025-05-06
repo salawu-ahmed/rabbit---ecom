@@ -28,7 +28,7 @@ router.post('/', protect, admin, async (req, res) => {
             dimensions,
             tags,
             weight,
-            sku 
+            sku
         } = req.body
 
         const product = new Product({
@@ -60,7 +60,7 @@ router.post('/', protect, admin, async (req, res) => {
         console.error(error);
         res.status(500).send('Server Error')
     }
-}) 
+})
 
 //@route PUT api/products/:id
 //@desc update an existing product using its id 
@@ -86,12 +86,12 @@ router.put('/:id', protect, admin, async (req, res) => {
             dimensions,
             tags,
             weight,
-            sku 
+            sku
         } = req.body
 
         let product = await Product.findById(req.params.id)
 
-        if(product) {
+        if (product) {
             product.name = name || product.name
             product.description = description || product.description
             product.price = price || product.price
@@ -114,7 +114,7 @@ router.put('/:id', protect, admin, async (req, res) => {
 
             const updatedProduct = await product.save()
             res.json(updatedProduct)
-        }else {
+        } else {
             res.status(404).json({
                 message: 'Product not found'
             })
@@ -129,10 +129,10 @@ router.put('/:id', protect, admin, async (req, res) => {
 //@route DELETE /api/products/:id
 //@desc Delete a product by it's id 
 //@access Private/Admin
-router.delete('/:id',protect, admin, async function(req, res) {
+router.delete('/:id', protect, admin, async function (req, res) {
     try {
         let product = await Product.findById(req.params.id)
-        if(product) {
+        if (product) {
             await product.deleteOne()
             res.json({
                 message: 'Product deleted successfully'
@@ -145,10 +145,94 @@ router.delete('/:id',protect, admin, async function(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error')
-        
+
     }
 })
 
+// @route GET /api/products/
+// @desc Get all products with optional query filters
+// @access public
+router.get('/', async function (req, res) {
+    try {
+        const {
+            collection,
+            size,
+            gender,
+            minPrice,
+            maxPrice,
+            sortBy,
+            search,
+            category,
+            material,
+            brand,
+            color, limit
+        } = req.query
+
+        let query = {}
+
+        // filter logic
+        // we assign the mongoDB query logic over here 
+        if (collection && collection.toLocaleString() !== 'all') {
+            query.collections = collection
+        }
+        if (category && category.toLocaleString() !== 'all') {
+            query.category = category
+        }
+        if (material) {
+            query.material = { $in: material.split(',') }
+        }
+        if (brand) {
+            query.brand = { $in: brand.split(',') }
+        }
+        if (size) {
+            query.sizes = { $in: size.split(',') }
+        }
+        if (color) {
+            query.colors = { $in: [color] }
+        }
+        if (gender) {
+            query.gender = gender
+        }
+        if (minPrice || maxPrice) {
+            query.price = {}
+            if (minPrice) query.price.$gte = Number(minPrice)
+            if (maxPrice) query.price.$lte = Number(maxPrice)
+        }
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+            ]
+        }
+
+        // sorting logic
+        let sort = {}
+        if (sortBy) {
+            switch (sortBy) {
+                case 'priceAsc':
+                    sort = { price: 1 }
+                    break;
+                case 'priceDesc':
+                    sort = { price: -1 }
+                    break;
+                case 'popularity':
+                    sort = { rating: -1 }
+                default:
+                    break;
+            }
+        }
+
+        // Fetch products from the database and apply sorting and limit.
+        // the mongoDB query logic created at the top is called or passed in here
+        let products = await Product.find(query).sort(sort).limit(Number(limit) || 0)
+        res.json(products)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error')
+
+    }
+})
 
 
 module.exports = router

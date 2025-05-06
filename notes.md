@@ -22,6 +22,22 @@ he presents a table for the schema of the products. I like how I am able to see 
 I really like how he approach creating the routes for the product model as well. he first list 
 all the routes he has to create. I think this is incredible. It helps put the backend into perspective.
 
+#### Difference Between req.params & req.query
+In Express the req.param and req.query are used to access different types of parameters in a request.
+- req.query is used to access query string parameters in a URL.
+- req.params is used to access route parameters defined in a URL path
+<b>The route sting is different from the query string</b>
+When trying to retrieve a parameter first identify whether it is in the query string or the route string. 
+
+#### What is an enum?
+An enum is a predefined set of expected values. When the user enters a value
+that does not match one of the values specified then an error will be thrown.
+
+#### MongoDB operators
+- The <b>$in</b> operator selects the documents where the value of a field equals any value in the specified array
+
+
+
 ## Todos
 #### Dates 
 I have realised that working with dates is going to be a common thing when working with appplications hence I am going to spend sometime reading on the javascript date object and build a few projects around it.
