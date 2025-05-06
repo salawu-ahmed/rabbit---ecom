@@ -236,6 +236,43 @@ router.get('/', async function (req, res) {
 
 
 
+// @route GET /api/products/best-seller
+// @desc Get best selling items based on rating
+// @access Public 
+router.get('/best-seller', async function (req, res) {
+    try {
+        const bestSeller = await Product.findOne().sort({ rating: -1 })
+        if(bestSeller){
+            res.json(bestSeller)
+        } else {
+            res.status(404).json({
+                message: 'No best seller found'
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error')
+        
+    }
+})
+
+
+// @route GET /api/products/new-arrivals
+// @desc Retrieve latest 8 products based on the creation date (createdAt)
+// @access Public
+router.get('/new-arrivals', async function(req, res) {
+    try {
+        // Fetch latest 8 products from the database 
+        const newArrivals = await Product.find().sort({ createdAt: -1 }).limit(8)
+        res.json(newArrivals)
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error')
+    }
+})
+
+
+
 // @route GET /api/products/:id
 // @desc Retrieve a product by it's id 
 // @access Public
@@ -259,28 +296,29 @@ router.get('/:id', async function (req, res) {
 // @route GET /api/products/similar/:id
 // @desc Retrieve similar products based on current product's gender and category
 // @access Public
-router.get('/similar/:id', async function(req, res) {
-    const {id} = req.params
+router.get('/similar/:id', async function (req, res) {
+    const { id } = req.params
     try {
         let product = await Product.findById(id)
-        if(!product){
+        if (!product) {
             res.status(404).json({
-                message:'Product not found'
+                message: 'Product not found'
             })
         }
-        
+
         let similarProducts = await Product.find({
-            _id: {$ne: id}, // excludes the current product id. (ne->not equals)
+            _id: { $ne: id }, // excludes the current product id. (ne->not equals)
             gender: product.gender,
             category: product.category
         }).limit(4)
-        
+
         res.json(similarProducts)
     } catch (error) {
         console.error(error);
-        res.status(500).send('Server Error')    
+        res.status(500).send('Server Error')
     }
 })
+
 
 
 module.exports = router
