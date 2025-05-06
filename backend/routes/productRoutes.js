@@ -235,4 +235,26 @@ router.get('/', async function (req, res) {
 })
 
 
+
+// @route GET /api/products/:id
+// @desc Retrieve a product by it's id 
+// @access Public
+router.get('/:id', async function (req, res) {
+    const { id } = req.params
+    try {
+        let product = await Product.findById(id)
+        if (product) {
+            res.status(201).json(product)
+        } else {
+            res.status(404).json({
+                message: 'Product not found'
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error')
+    }
+})
+
+
 module.exports = router
