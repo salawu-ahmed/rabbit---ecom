@@ -1,12 +1,12 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
-const protect = require('../middleware/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 
 const router = express.Router()
 
 router.post('/register', async function (req, res) {
-    const {name, email, password} = req.body
+    const {name, email, password, role} = req.body
 
     try {
         // check if a user already exist with the same mail
@@ -16,7 +16,7 @@ router.post('/register', async function (req, res) {
             return res.status(400).send('User already exists with this email')
         }
         // create a new user if user does not already exist 
-        user = new User({name,email, password})
+        user = new User({name,email, password, role})
         await user.save() 
 
         // creating the jwt token
