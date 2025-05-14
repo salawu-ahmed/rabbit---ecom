@@ -181,4 +181,21 @@ router.delete('/', async function (req, res) {
         
     }
 })
+
+// @route GET /api/cart
+router.get('/', async function (req, res) {
+    const { userId, guestId } = req.params
+    try {
+        const cart = await getCart(userId, guestId)
+        if(cart){
+            return res.status(200).json(cart)
+        } else {
+            return res.status(404).json({ message: 'Cart not found'})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' })
+    }
+})
+
 module.exports = router
