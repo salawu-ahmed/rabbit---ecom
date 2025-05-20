@@ -18,7 +18,9 @@ router.get('/', protect, admin, async function(req, res) {
 })
 
 
-// /api/admin/orders/:id
+// @route PUT /api/admin/orders/:id
+// @desc Update an order - (admin only)
+// @access private/admin
 router.put('/:id', protect, admin, async function(req, res){
     const { id } = req.params
     const { status } = req.body
@@ -37,6 +39,25 @@ router.put('/:id', protect, admin, async function(req, res){
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error'})
+    }
+})
+
+// @route DELETE /api/admin/order/;id
+// @desc delete an order 
+// @access private/admin
+router.delete('/:id', protect, admin, async function(req, res){
+    const { id } = req.params
+    try {
+        const order = await Order.findById(id)
+        if(order){
+            await order.deleteOne()
+            res.json({ message: 'Order deleted'})
+        } else {
+            res.status(404).json({ message: 'Order not found' })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' })
     }
 })
 
