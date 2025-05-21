@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router'
 import login from '../assets/login.webp'
+import { loginUser } from '../redux/slices/authSlice'
+import { useDispatch } from 'react-redux'
 
 function Login() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const dispatch = useDispatch()
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('log in successful', {password, email});
+        dispatch(loginUser({ email, password }))
+       // console.log('log in successful', { password, email });
     }
-    
+
     return (
         <div className='flex'>
             <div className="w-full flex md:w-1/2 flex-col justify-center items-center p-8 md:p-12">
@@ -50,19 +55,19 @@ function Login() {
                             placeholder='Enter your password'
                             className='w-full rounded border p-2'
                         />
-                        </div>
-                        <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign in</button>
-                        <p className="mt-6 text-center text-sm">
-                            Don't have an account?
-                            <Link to='/register' className='text-blue-500'>Register</Link>
-                        </p>
+                    </div>
+                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign in</button>
+                    <p className="mt-6 text-center text-sm">
+                        Don't have an account?
+                        <Link to='/register' className='text-blue-500'>Register</Link>
+                    </p>
                 </form>
             </div>
 
             <div className="hidden md:block w-1/2 bg-gray-800">
-            <div className="h-full flex flex-col justify-center items-center">
-                <img src={login} alt="Login to account" className='h-[750px] w-full object-center' />
-            </div>
+                <div className="h-full flex flex-col justify-center items-center">
+                    <img src={login} alt="Login to account" className='h-[750px] w-full object-center' />
+                </div>
             </div>
         </div>
     )

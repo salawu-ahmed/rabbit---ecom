@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router'
 import register from '../assets/register.webp'
+import { registerUser } from '../redux/slices/authSlice'
+import { useDispatch } from 'react-redux'
 
 function Register() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
+    const dispatch = useDispatch()
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('user successfully registered', { name, email, password });
+        dispatch(registerUser({name, email, password}))
+        //console.log('user successfully registered', { name, email, password });
     }
 
     return (
@@ -30,7 +34,7 @@ function Register() {
                         <input
                             type="text"
                             name="name"
-                            id="email"
+                            id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder='Enter your name'
