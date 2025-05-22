@@ -26,7 +26,7 @@ export const fetchAllOrders = createAsyncThunk(
 
 // update an order (admin only)
 export const updateOrderStatus = createAsyncThunk(
-    'adminOrders/fetchAllOrders',
+    'adminOrders/updateOrderStatus',
     async ({ id, status }, { rejectWithValue }) => {
         try {
             const response = await axios.put(

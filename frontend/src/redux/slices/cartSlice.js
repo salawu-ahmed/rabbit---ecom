@@ -124,7 +124,7 @@ export const mergeCart = createAsyncThunk(
 
 
 const cartSlice = createSlice({
-    naem: 'cart',
+    name: 'cart',
     initialState: {
         cart: loadCartFromStorage(),
         loading: false,
@@ -147,7 +147,7 @@ const cartSlice = createSlice({
             state.cart = action.payload
             saveCartToStorage(action.payload)
         })
-        .addCase(fetchCart.pending, (state, action) => {
+        .addCase(fetchCart.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message || 'FAILED TO FETCH CART'
         })
@@ -163,7 +163,7 @@ const cartSlice = createSlice({
             state.cart = action.payload
             saveCartToStorage(action.payload)
         })
-        .addCase(addToCart.pending, (state, action) => {
+        .addCase(addToCart.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload?.message || 'FAILED TO ADD TO CART'
         })
@@ -179,7 +179,7 @@ const cartSlice = createSlice({
             state.cart = action.payload
             saveCartToStorage(action.payload)
         })
-        .addCase(updateCartItemQuantity.pending, (state, action) => {
+        .addCase(updateCartItemQuantity.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload?.message || 'FAILED TO UPDATE ITEM QUANTITY'
         })
@@ -195,7 +195,7 @@ const cartSlice = createSlice({
             state.cart = action.payload
             saveCartToStorage(action.payload)
         })
-        .addCase(removeItemFromCart.pending, (state, action) => {
+        .addCase(removeItemFromCart.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload?.message || 'FAILED TO REMOVE ITEM FROM CART'
         })
@@ -211,7 +211,7 @@ const cartSlice = createSlice({
             state.cart = action.payload
             saveCartToStorage(action.payload)
         })
-        .addCase(mergeCart.pending, (state, action) => {
+        .addCase(mergeCart.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload?.message || 'FAILED TO MERGE CART'
         })

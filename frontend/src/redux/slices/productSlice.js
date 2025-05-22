@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
-import { Query } from "mongoose";
 
 // create async thunk to fetch products based on collections and optional filters 
 export const fetchProductsByFilters = createAsyncThunk(
@@ -134,7 +133,7 @@ const productsSlice = createSlice({
                 state.loading = false
                 state.products = Array.isArray(action.payload) ? action.payload : []
             })
-            .addCase(fetchProductsByFilters.pending, (state, action) => {
+            .addCase(fetchProductsByFilters.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
             })
@@ -148,7 +147,7 @@ const productsSlice = createSlice({
                 state.loading = false
                 state.products = action.payload
             })
-            .addCase(fetchProductDetails.pending, (state, action) => {
+            .addCase(fetchProductDetails.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
             })
@@ -167,7 +166,7 @@ const productsSlice = createSlice({
                     state.products[index] = updatedProduct
                 }
             })
-            .addCase(updateProduct.pending, (state, action) => {
+            .addCase(updateProduct.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
             })
@@ -182,7 +181,7 @@ const productsSlice = createSlice({
                 state.loading = false
                 state.products = action.payload
             })
-            .addCase(fetchSimilarProducts.pending, (state, action) => {
+            .addCase(fetchSimilarProducts.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload.message
             })

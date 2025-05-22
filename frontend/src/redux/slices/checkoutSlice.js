@@ -28,7 +28,7 @@ const checkoutSlice = createSlice({
     initialState: {
         checkout: null,
         loading: false,
-        error: nulll
+        error: null
     },
     reducers: {},
     extraReducers: (bulilder) => {
