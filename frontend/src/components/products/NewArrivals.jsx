@@ -1,89 +1,8 @@
+import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { Link } from 'react-router'
 
-const newArrivals = [
-    {
-        _id: '1',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=9'
-            }
-        ]
-    },
-    {
-        _id: '2',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=2'
-            }
-        ]
-    },
-    {
-        _id: '4',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=4'
-            }
-        ]
-    },
-    {
-        _id: '5',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=5'
-            }
-        ]
-    },
-    {
-        _id: '3',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=3'
-            }
-        ]
-    },
-    {
-        _id: '6',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=6'
-            }
-        ]
-    },
-    {
-        _id: '7',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=7'
-            }
-        ]
-    },
-    {
-        _id: '8',
-        name: 'Stylish Jacket',
-        price: 120,
-        images: [
-            {
-                url: 'https://picsum.photos/500/500?random=8'
-            }
-        ]
-    },
-]
 
 export default function NewArrivals() {
     const scrollRef = useRef(null)
@@ -92,6 +11,22 @@ export default function NewArrivals() {
     const [scrollLeft, setScrollLeft] = useState(0)
     const [canScrollRight, setCanScrollRight] = useState(true)
     const [canScrollLeft, setCanScrollLeft] = useState(false)
+    const [newArrivals, setNewArrivals] = useState([])
+
+    useEffect(() => {
+        const fetchNewArrivals = async () => {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`
+                )
+                setNewArrivals(response.data)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchNewArrivals()
+    }, [])
 
     function scroll(direction) {
         const container = scrollRef.current
@@ -135,7 +70,7 @@ export default function NewArrivals() {
             container.addEventListener('scroll', updateScrollButtons)
         }
         return () => container.removeEventListener('scroll', updateScrollButtons)
-    }, [])
+    }, [newArrivals])
     return (
         <section className='py-16 px-4 lg:px-0'>
             <div className="container mx-auto text-center mb-10 relative">
@@ -164,7 +99,7 @@ export default function NewArrivals() {
 
                 {/* scrollable content */}
                 <div
-                    className={`container mx-auto overflow-x-scroll flex space-x-6 relative no-scrollbar ${ isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+                    className={`container mx-auto overflow-x-scroll flex space-x-6 relative no-scrollbar ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                     ref={scrollRef}
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}

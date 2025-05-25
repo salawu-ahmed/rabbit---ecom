@@ -52,16 +52,16 @@ export default function Navbar() {
                 {/* center */}
                 <div className='hidden md:flex space-x-6 items-center justify-between'>
                     <div className="hidden md:flex space-x-6">
-                        <Link to='/collections/all' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for men</Link>
+                        <Link to='/collections/all?gender=Men' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for men</Link>
                     </div>
                     <div className="hidden md:flex space-x-6">
-                        <Link to='#' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for women</Link>
+                        <Link to='/collections/all?gender=Women' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>for women</Link>
                     </div>
                     <div className="hidden md:flex space-x-6">
-                        <Link to='#' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>top wear</Link>
+                        <Link to='/collections/all?category=Top Wear' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>top wear</Link>
                     </div>
                     <div className="hidden md:flex space-x-6">
-                        <Link to='#' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>bottom wear</Link>
+                        <Link to='/collections/all?category=Bottom Wear' className='text-gray-700 hover:text-black text-sm font-medium uppercase'>bottom wear</Link>
                     </div>
                 </div>
 
@@ -112,10 +112,10 @@ export default function Navbar() {
                 <div className="p-4">
                     <h2 className="mb-4 font-bold fontxl">Menu</h2>
                     <nav className="space-y-4">
-                        <Link to='#' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>for men</Link>
-                        <Link to='#' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>for women</Link>
-                        <Link to='#' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>top wear</Link>
-                        <Link to='#' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>bottom wear</Link>
+                        <Link to='/collections/all?gender=Men' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>for men</Link>
+                        <Link to='/collections/all?gender=Women' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>for women</Link>
+                        <Link to='/collections/all?category=Top Wear' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>top wear</Link>
+                        <Link to='/collections/all?category=Bottom Wear' onClick={toggleMobileNav} className='text-gray-600 cursor-pointer block hover:text-black text-sm font-medium uppercase'>bottom wear</Link>
                     </nav>
                 </div>
             </div>

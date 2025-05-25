@@ -1,11 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-export default function ProductGrid({products}) {
+export default function ProductGrid({products, loading, error}) {
+    console.log(products);
+    
+    
+    if(loading) {
+        return <p> Loading.... </p>
+    }
+    if(error) {
+        return <p>Error: {error}</p>
+    }
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
         {
-            products.map((product) => {
+            products && (products.map((product) => {
                 return <Link 
                 to={`/product/${product._id}`}
                 className='block'
@@ -24,6 +33,7 @@ export default function ProductGrid({products}) {
                     </div>
                 </Link>
             })
+        )
         }
     </div>
   )

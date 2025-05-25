@@ -22,7 +22,7 @@ function FilterSidebar() {
     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
     const materials = ['Cotton', 'Wool', 'Polyester', 'Silk', 'Linen', 'Denim', 'Fleese', 'Viscose']
     const brands = ['Urban Threads', 'Mordern Fit', 'Street Style', 'Beach Breeze', 'Fashionista', 'ChicStyle']
-    const genders = ['Male', 'Female']
+    const genders = ['Men', 'Women']
 
     useEffect(() => {
         const params = Object.fromEntries([...searchParams])
@@ -58,6 +58,8 @@ function FilterSidebar() {
 
         setFilters(newFilters)
         updateURLParams(newFilters)
+        console.log(newFilters);
+        
     }
 
     const updateURLParams = (newFilters) => {
