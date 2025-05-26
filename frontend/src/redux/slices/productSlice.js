@@ -200,5 +200,5 @@ const productsSlice = createSlice({
 })
 
 
-const { setFilters, clearFilters } = productsSlice.actions
+export const { setFilters, clearFilters } = productsSlice.actions
 export default productsSlice.reducer

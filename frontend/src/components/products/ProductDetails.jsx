@@ -17,9 +17,7 @@ export default function ProductDetails({ productId }) {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-  console.log(similarProducts);
-  
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)  
 
   const productFetchId = productId || id
 
@@ -58,7 +56,7 @@ export default function ProductDetails({ productId }) {
       userId: user?._id,
       guestId
     }))
-      .then((state) => {
+      .then(() => {
         toast.success('Product added to the cart', {
           duration: 1000,
         })

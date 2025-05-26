@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-export default function ProductGrid({products, loading, error}) {
-    console.log(products);
-    
+export default function ProductGrid({products, loading, error}) {    
     
     if(loading) {
         return <p> Loading.... </p>
