@@ -21,25 +21,21 @@ async function getCart(userId, guestId) {
 router.post('/', async function (req, res) {
     const { productId, quantity, size, color, guestId, userId } = req.body
     try {
-        console.log(productId);
 
         const product = await Product.findById(productId)
         if (!product) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Product not found'
             })
         }
 
         // determine if the user is logged in or in guest mode 
         let cart = await getCart(userId, guestId)
-        console.log(cart);
-
 
         // if the cart exist we first have to update it 
         if (cart) {
-            console.log(cart);
 
-            let productIndex = cart?.products.findIndex((p) => {
+            let productIndex = cart?.products?.findIndex((p) => {
                 p.productId.toString() === productId &&
                     p.size === size &&
                     p.color === color
@@ -66,8 +62,8 @@ router.post('/', async function (req, res) {
                 0
             )
 
-            await Cart.save()
-            res.status(200).json(cart)
+            await cart.save()
+            return res.status(200).json(cart)
         }
 
         // create a new cart for the guest or the user 
@@ -87,7 +83,6 @@ router.post('/', async function (req, res) {
             ],
             totalPrice: product.price * quantity
         })
-        console.log(newCart);
 
         return res.status(201).json(newCart)
     } catch (error) {
@@ -131,7 +126,7 @@ router.put('/', async function (req, res) {
                 0
             )
             await cart.save()
-            res.status(200).json(cart)
+            return res.status(200).json(cart)
         } else {
             return res.status(404).json({
                 message: "Product not found in cart "
@@ -140,7 +135,7 @@ router.put('/', async function (req, res) {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' })
+        return res.status(500).json({ message: 'Server Error' })
     }
 })
 
@@ -149,27 +144,31 @@ router.put('/', async function (req, res) {
 // @desc remove a product from the cart 
 // @access Public 
 router.delete('/', async function (req, res) {
-    const { productId, size, color, quantity, userId, guestId } = req.body
+    const { productId, size, color, userId, guestId } = req.body
+    const { id } = req.params
     try {
         let cart = await getCart(userId, guestId)
         if (!cart) {
             return res.status(404).json({ message: 'Cart not found' })
         }
 
-        const productIndex = cart.products.findIndex(
+        const productIndex = cart?.products?.findIndex(
             (p) => p.productId.toString() === productId &&
                 p.color === color &&
                 p.size === size
         )
 
         if (productIndex > -1) {
+            // await cart.products.updateOne({$pull: {products: {$in:{productId}}}})
             cart.products.splice(productIndex, 1)
             cart.totalPrice = cart.products.reduce(
                 (acc, item) => acc + item.price * item.quantity,
                 0
             )
-            await cart.save()
-            return res.status(200).json(cart)
+            const newCart = await cart.save()
+            // console.log(newCart);
+            
+            return res.status(200).json(newCart)
         } else {
             return res.status(404).json({
                 message: 'Product not found in cart'
@@ -184,7 +183,7 @@ router.delete('/', async function (req, res) {
 
 // @route GET /api/cart
 router.get('/', async function (req, res) {
-    const { userId, guestId } = req.params
+    const { userId, guestId } = req.body
     try {
         const cart = await getCart(userId, guestId)
         if (cart) {

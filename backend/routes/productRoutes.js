@@ -301,7 +301,7 @@ router.get('/similar/:id', async function (req, res) {
     try {
         let product = await Product.findById(id)
         if (!product) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Product not found'
             })
         }
@@ -312,7 +312,7 @@ router.get('/similar/:id', async function (req, res) {
             category: product.category
         }).limit(4)
 
-        res.json(similarProducts)
+        return res.status(201).json(similarProducts)
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error')
