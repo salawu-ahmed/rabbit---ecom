@@ -4,6 +4,7 @@ import { HiOutlineUser, HiOutlineShoppingBag, HiMenu } from 'react-icons/hi'
 import SearchBar from './SearchBar'
 import CartDrawer from './CartDrawer'
 import { IoMdClose } from 'react-icons/io'
+import { useSelector } from 'react-redux'
 
 export default function Navbar() {
     // refs
@@ -13,6 +14,11 @@ export default function Navbar() {
     // states
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
+
+    const { cart } = useSelector((state) => state.cart)
+    const cartItemCount = cart?.products?.reduce(
+        (totalItems, product) => totalItems + product.quantity, 0
+    ) || 0
 
     const handleClickOutsideElements = useCallback(function handleClickOutsideElements(e) {
         if (isMobileNavOpen && !mobileNavRef.current.contains(e.target)) {
@@ -79,7 +85,13 @@ export default function Navbar() {
                         onClick={toggleCartDrawer}
                     >
                         <HiOutlineShoppingBag size={25} />
-                        <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded-full px-2 py-0.5'>4</span>
+                        {
+                            cartItemCount > 0 ? (
+                                <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded-full px-2 py-0.5'>{cartItemCount}</span>
+                            ) : (
+                                <span className='absolute bg-rabbit-red -top-1 text-white text-xs rounded-full px-2 py-0.5'>0</span>
+                            )
+                        }
                     </button>
 
                     {/* Search componnet */}
