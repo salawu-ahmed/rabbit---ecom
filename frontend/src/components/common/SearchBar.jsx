@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { HiMagnifyingGlass, HiMiniXMark } from 'react-icons/hi2'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { fetchProductsByFilters, setFilters } from '../../redux/slices/productSlice'
 
 export default function SearchBar() {
     const [searchTerm, setSearchTerm] = useState('')
     const [isOpen, setIsOpen] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
 
     function handleSearchToggle() {
         setIsOpen(prev => !prev)
@@ -11,8 +17,10 @@ export default function SearchBar() {
 
     function handleSearch(e) {
         e.preventDefault()
-        console.log(searchTerm);
-        handleSearchToggle()
+        dispatch(setFilters({ search: searchTerm }))
+        dispatch(fetchProductsByFilters({ search: searchTerm }))
+        navigate(`/collections/all?search=${searchTerm}`)
+        setIsOpen(false)
     }
 
     return (
@@ -32,12 +40,14 @@ export default function SearchBar() {
                                 placeholder='Search'
                             />
                             <button
-                                type='submit'
+                                type='button'
+                                onClick={handleSearchToggle}
+                                onKeyDown={(e) => e.key === 'Enter' ? handleSearch(e) : undefined}
                                 className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800'
                             >
                                 <HiMagnifyingGlass
                                     size={25}
-                                    className='text-gray-300'
+                                    className='text-gray-500'
                                 />
                             </button>
                         </div>
