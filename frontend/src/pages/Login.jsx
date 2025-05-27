@@ -1,18 +1,38 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router'
 import login from '../assets/login.webp'
 import { loginUser } from '../redux/slices/authSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { mergeCart } from '../redux/slices/cartSlice'
 
 function Login() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { user, guestId } = useSelector((state) => state.auth)
+    const { cart } = useSelector((state) => state.cart)    
+
+    // get redirect parameter and also check if it is checkout or something else 
+    const redirect = new URLSearchParams(location.search).get('redirect') || '/'
+    const isCheckoutRedirect = redirect.includes('checkout')
+
+    useEffect(() => {
+        if (user) { // when the person logs in
+            if (cart?.products.length > 0 && guestId) { // the person has already selected items
+                dispatch(mergeCart({ guestId, user })) // merge the guest cart into user cart
+                    .then(() => navigate(isCheckoutRedirect ? '/checkout' : '/')) //check whether they came from checkout page and redirect them back or take them to homepage to continue shopping
+            } else {
+                navigate(isCheckoutRedirect ? '/checkout': '/')
+            }
+        }
+    }, [user, dispatch, guestId, cart, isCheckoutRedirect, navigate])
 
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(loginUser({ email, password }))
-       // console.log('log in successful', { password, email });
+        // console.log('log in successful', { password, email });
     }
 
     return (
@@ -59,7 +79,7 @@ function Login() {
                     <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign in</button>
                     <p className="mt-6 text-center text-sm">
                         Don't have an account?
-                        <Link to='/register' className='text-blue-500'>Register</Link>
+                        <Link to={`/register?redirect=${encodeURIComponent(redirect)}`} className='text-blue-500'>Register</Link>
                     </p>
                 </form>
             </div>
