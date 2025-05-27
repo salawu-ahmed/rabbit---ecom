@@ -1,14 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { addUser, deleteUser, fetchUsers, updateUser } from '../../redux/slices/adminSlice'
 
 function UserMangement() {
-    const users = [
-        {
-            _id: 15648,
-            name: 'John Doe',
-            email: 'john@gmail.com',
-            role: 'admin'
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.auth)
+    const { users, loading, error } = useSelector((state) => state.admin)
+    
+
+    useEffect(() => {
+        if (user && user.role !== 'admin') {
+            navigate('/')
         }
-    ]
+    }, [user, navigate])
+
+    useEffect(() => {
+        if(user && user.role === 'admin') {
+            dispatch(fetchUsers())
+        }
+    }, [dispatch, user])
+
+    // const users = [
+    //     {
+    //         _id: 15648,
+    //         name: 'John Doe',
+    //         email: 'john@gmail.com',
+    //         role: 'admin'
+    //     }
+    // ]
 
     const [formData, setFormData] = useState({
         name: '',
@@ -28,7 +49,7 @@ function UserMangement() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(formData);
+        dispatch(addUser(formData))
         
         // reset form after submission
         setFormData({
@@ -39,23 +60,35 @@ function UserMangement() {
         })
     }
 
-    function handleRoleChange (userId, newRole) {
+    function handleRoleChange (user, newRole) {
         // const user = users.filter((user) => user.id == userId)
-        console.log({
-            _id: userId,
+        const userData = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
             role: newRole
-        });
+        }        
+        dispatch(updateUser(userData))
     }
 
     function handleDeleteUser (userId) {
         if (window.confirm('Are you sure you want to delete this user?')) {
-            console.log('deleting user with ID:', userId);
-            
+            dispatch(deleteUser(userId))
         }
     }
+
+    // if (loading) {
+    //     return <p>Loading</p>
+    // }
+
+    // if(error) {
+    //     return <p>Error: {error}</p>
+    // }
     return (
         <div className='max-w-7xl mx-auto p-6'>
             <h2 className="mb-6 font-bold text-2xl">User Management</h2>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
             {/* Add a new user form */}
             <div className="p-6 rounded-lg mb-6">
                 <h3 className="text-lg font-bold mb-4">Add New User</h3>
@@ -131,7 +164,7 @@ function UserMangement() {
                                     <td className="p-4">
                                         <select 
                                         value={user.role} 
-                                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                                        onChange={(e) => handleRoleChange(user, e.target.value)}
                                         className='p-2 border rounded '
                                         >
                                             <option value="customer">Customer</option>

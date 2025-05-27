@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchUsers = createAsyncThunk(
     'admin/fetchUsers',
-    async ({ rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get(
                 `${import.meta.env.VITE_BACKEND_URL}/api/admin/users`,
@@ -55,7 +55,7 @@ export const updateUser = createAsyncThunk(
                     }
                 }
             )
-            return response.data
+            return response.data.updatedUser
         } catch (error) {
             return rejectWithValue(error.response.data)
         }
@@ -114,11 +114,12 @@ const adminSlice = createSlice({
         .addCase(updateUser.fulfilled, (state, action) => {
             state.loading = false
             const updatedUser = action.payload
+            
             const userIndex = state.users.findIndex((user) => {
-                user._id === updateUser._id
+                user._id === updatedUser._id
             })
             if(userIndex !== -1){
-                state.users[userIndex] = updateUser
+                state.users[userIndex] = updatedUser
             }
         })
         .addCase(updateUser.rejected, (state, action) => {
