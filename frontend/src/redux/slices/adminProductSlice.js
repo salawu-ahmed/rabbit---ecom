@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const fetchProducts = createAsyncThunk(
     'adminProducts/fetchProducts',
-    async ({ rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get(
                 `${import.meta.env.VITE_BACKEND_URL}/api/admin/products`,
@@ -105,7 +105,7 @@ const adminProductsSlice = createSlice({
             state.loading = false
             state.products = action.payload
         })
-        .addCase(fetchProducts.rejected, (state) => {
+        .addCase(fetchProducts.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
         })
@@ -120,7 +120,7 @@ const adminProductsSlice = createSlice({
             state.loading = false
             state.products.push(action.payload)
         })
-        .addCase(addProduct.rejected, (state) => {
+        .addCase(addProduct.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
         })
@@ -141,7 +141,7 @@ const adminProductsSlice = createSlice({
                 state.products[productIndex] = updatedProduct
             }
         })
-        .addCase(updateProduct.rejected, (state) => {
+        .addCase(updateProduct.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
         })

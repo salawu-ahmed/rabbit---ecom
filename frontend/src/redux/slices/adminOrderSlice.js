@@ -5,7 +5,7 @@ import axios from "axios";
 // fetch all orders (admin only)
 export const fetchAllOrders = createAsyncThunk(
     'adminOrders/fetchAllOrders',
-    async (_, [rejectWithValue]) => {
+    async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get(
                 `${import.meta.env.VITE_BACKEND_URL}/api/admin/orders`,
@@ -15,6 +15,8 @@ export const fetchAllOrders = createAsyncThunk(
                     }
                 }
             )
+            console.log(response.data);
+
             return response.data
         } catch (error) {
             return rejectWithValue(error.response.data)
@@ -22,7 +24,20 @@ export const fetchAllOrders = createAsyncThunk(
     }
 )
 
-
+export const fetchOrders = createAsyncThunk(
+    `adminOrder/fetchOrders`,
+    async (_, { rejectWithValue }) => {
+        const response = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/api/admin/orders`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('userToken')}`
+                }
+            }
+        )
+        return response.data
+    }
+)
 
 // update an order (admin only)
 export const updateOrderStatus = createAsyncThunk(
@@ -81,25 +96,34 @@ const adminOrderSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // fetchAdminOrders
+            .addCase(fetchOrders.fulfilled, (state, action) => {
+                state.loading = false
+                state.orders = action.payload
+                state.totalOrders = action.payload.length
+                // calculate totalSales
+                state.totalSales = state.orders.reduce((acc, order) => {
+                    return acc + order.totalPrice
+                }, 0
+                )
+            })
             .addCase(fetchAllOrders.pending, (state) => {
                 state.loading = true
                 state.error = null
             })
             .addCase(fetchAllOrders.fulfilled, (state, action) => {
                 state.loading = false
-                state.orders = action.payload
+                state.orders = Array.isArray(action.payload) ? action.payload : ['not an arra']
                 state.totalOrders = action.payload.length
 
                 // calculate totalSales
-                totalSales = action.payload.reduce((acc, order) => {
+                state.totalSales = state.orders.reduce((acc, order) => {
                     return acc + order.totalPrice
                 }, 0
                 )
             })
-            .addCase(fetchAllOrders.rejected, (state) => {
+            .addCase(fetchAllOrders.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.payload.message
+                state.error = action.error.message
             })
 
             // update Order Status
@@ -113,13 +137,13 @@ const adminOrderSlice = createSlice({
                 const orderIndex = state.orders.findIndex((order) => {
                     order._id === updatedOrder._id
                 })
-                if(orderIndex !== -1){
+                if (orderIndex !== -1) {
                     state.orders[orderIndex] = updatedOrder
                 }
             })
-            .addCase(updateOrderStatus.rejected, (state) => {
+            .addCase(updateOrderStatus.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.payload.message
+                state.error = action.error.message
             })
 
             // delete Order 
@@ -134,9 +158,9 @@ const adminOrderSlice = createSlice({
                     order._id !== deletedOrderId
                 })
             })
-            .addCase(deleteOrder.rejected, (state) => {
+            .addCase(deleteOrder.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.payload.message
+                state.error = action.error.message
             })
     }
 })

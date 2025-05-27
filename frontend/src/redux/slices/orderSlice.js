@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const fetchUserOrders = createAsyncThunk(
     'orders/fetchUserOrders',
-    async ({rejectWithValue}) => {
+    async (_,{rejectWithValue}) => {
         try {
             const response = await axios.get(
                 `${import.meta.env.VITE_BACKEND_URL}/api/orders/my-orders`,
@@ -77,7 +77,7 @@ const orderSlice = createSlice({
         })
         .addCase(fetchOrderDetails.fulfilled, (state, action) => {
             state.loading = false
-            state.orders = action.payload
+            state.orderDetails = action.payload
         })
         .addCase(fetchOrderDetails.rejected, (state, action) => {
             state.loading = false
