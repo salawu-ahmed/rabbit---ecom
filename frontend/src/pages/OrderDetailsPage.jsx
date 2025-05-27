@@ -1,51 +1,72 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
+import { fetchOrderDetails } from '../redux/slices/orderSlice'
 
 function OrderDetailsPage() {
   const { id } = useParams()
-  const [orderDetails, setOrderDetails] = useState(null)
+  const dispatch = useDispatch()
+  const {orderDetails, loading, error} = useSelector((state) => state.orders)
+
+  console.log(orderDetails);
+  
+  
   useEffect(() => {
-    const mockOrderDetails = {
-      _id: id,
-      createdAt: new Date(),
-      isPaid: true,
-      isDelivered: false,
-      paymentMethod: 'PayPal',
-      shippingMethod: 'Standard',
-      shippingAddress: { city: 'New York', country: 'USA' },
-      orderItems: [
-        {
-          productId: '1',
-          price: 120,
-          name: 'Stylish Jacket',
-          image: 'https://picsum.photos/150?random=4',
-          quantity: 1
-        },
-        {
-          productId: '2',
-          price: 300,
-          name: 'Brazillian Tux',
-          image: 'https://picsum.photos/150?random=3',
-          quantity: 1
-        },
-        {
-          productId: '23',
-          price: 150,
-          name: 'Cotton Socks',
-          image: 'https://picsum.photos/150?random=46',
-          quantity: 4
-        },
-        {
-          productId: 'T4968',
-          price: 20,
-          name: 'Tie & Pocket Square Combo',
-          image: 'https://picsum.photos/150?random=19',
-          quantity: 3
-        },
-      ]
-    }
-    setOrderDetails(mockOrderDetails)
-  }, [id])
+    dispatch(fetchOrderDetails(id))
+  }, [dispatch, id])
+
+  if (loading) {
+    return <p>Loading....</p>
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>
+  }
+
+  // useEffect(() => {
+  //   const mockOrderDetails = {
+  //     _id: id,
+  //     createdAt: new Date(),
+  //     isPaid: true,
+  //     isDelivered: false,
+  //     paymentMethod: 'PayPal',
+  //     shippingMethod: 'Standard',
+  //     shippingAddress: { city: 'New York', country: 'USA' },
+  //     orderItems: [
+  //       {
+  //         productId: '1',
+  //         price: 120,
+  //         name: 'Stylish Jacket',
+  //         image: 'https://picsum.photos/150?random=4',
+  //         quantity: 1
+  //       },
+  //       {
+  //         productId: '2',
+  //         price: 300,
+  //         name: 'Brazillian Tux',
+  //         image: 'https://picsum.photos/150?random=3',
+  //         quantity: 1
+  //       },
+  //       {
+  //         productId: '23',
+  //         price: 150,
+  //         name: 'Cotton Socks',
+  //         image: 'https://picsum.photos/150?random=46',
+  //         quantity: 4
+  //       },
+  //       {
+  //         productId: 'T4968',
+  //         price: 20,
+  //         name: 'Tie & Pocket Square Combo',
+  //         image: 'https://picsum.photos/150?random=19',
+  //         quantity: 3
+  //       },
+  //     ]
+  //   }
+  //   setOrderDetails(mockOrderDetails)
+  // }, [id])
+
+
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6'>
       <h2 className="text-2xl md:text-3xl font-bold mb-6">Order Details</h2>
@@ -107,7 +128,7 @@ function OrderDetailsPage() {
               <table className="min-w-full text-gray-600 mb-4">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="py-2 px-4">Name</th>
+                    <th className="py-2 px-4 text-left">Name</th>
                     <th className="py-2 px-4">Unity Price</th>
                     <th className="py-2 px-4">Quantity</th>
                     <th className="py-2 px-4">Total</th>
@@ -116,15 +137,15 @@ function OrderDetailsPage() {
                 <tbody>
                   {orderDetails.orderItems.map((item) => (
                     <tr key={item.productId} className='border-b'>
-                      <td className='py-2 px-4 flex items-center'>
+                      <td className='py-2 px-4 flex items-center '>
                         <img src={item.image} alt={item.name} className='w-12 h-12 object-cover mr-4 rounded-lg'/>
                         {/* linking to the product details page */}
                         <Link to={`/product/${item.productId}`} className='text-blue-500 hover:underline'>{item.name}</Link>
                       </td>
 
-                      <td className="py-2 px-4">${item.price} </td>
-                      <td className="py-2 px-4">${item.quantity} </td>
-                      <td className="py-2 px-4">${item.price * item.quantity} </td>
+                      <td className="py-2 px-4 text-center">${item.price} </td>
+                      <td className="py-2 px-4 text-center">{item.quantity} </td>
+                      <td className="py-2 px-4 text-center">${item.price * item.quantity} </td>
                     </tr>
                   ))}
                 </tbody>
