@@ -11,7 +11,7 @@ function Login() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
-    const { user, guestId } = useSelector((state) => state.auth)
+    const { user, guestId, loading } = useSelector((state) => state.auth)
     const { cart } = useSelector((state) => state.cart)    
 
     // get redirect parameter and also check if it is checkout or something else 
@@ -76,7 +76,7 @@ function Login() {
                             className='w-full rounded border p-2'
                         />
                     </div>
-                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign in</button>
+                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">{loading ? 'Loading...' : 'Sign in'}</button>
                     <p className="mt-6 text-center text-sm">
                         Don't have an account?
                         <Link to={`/register?redirect=${encodeURIComponent(redirect)}`} className='text-blue-500'>Register</Link>

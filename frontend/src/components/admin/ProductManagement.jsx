@@ -1,23 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router'
+import { deleteProduct, fetchProducts } from '../../redux/slices/adminProductSlice';
 
 function ProductManagement() {
-  const products = [
-    {
-      _id: 4568,
-      name: 'Shirt',
-      price: 45,
-      sku: '897797865412'
-    }
-  ]
+  // const products = [
+  //   {
+  //     _id: 4568,
+  //     name: 'Shirt',
+  //     price: 45,
+  //     sku: '897797865412'
+  //   }
+  // ]
+  const dispatch = useDispatch()
+  const {products, loading, error} = useSelector((state) => state.adminProducts)
+
+  useEffect(() => {
+    dispatch(fetchProducts())
+  }, [dispatch])
 
   function handleDeleteProduct (productId) {
     if (window.confirm('Are you sure you want to delete the product?')) {
-      console.log('deleting product with ID:', productId);
+      // console.log('deleting product with ID:', productId);
+      dispatch(deleteProduct(productId))
     }
   }
+
+if (loading) {
+  return <p>Loading...</p>
+}
+
+if (error) {
+  return <p>Error: {error}</p>
+}
+
   return (
-    <divc className='max-w-7xl p-6 mx-auto'>
+    <div className='max-w-7xl p-6 mx-auto'>
       <h2 className="text-2xl font-bold mb-6">Product Management</h2>
       <div className="overflow-x-auto shadow-md sm:rounded-lg">
         <table className="min-w-full text-left text-gray-400">
@@ -59,7 +77,7 @@ function ProductManagement() {
         </table>
       </div>
 
-    </divc>
+    </div>
   )
 }
 

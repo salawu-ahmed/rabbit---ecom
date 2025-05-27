@@ -14,7 +14,7 @@ function Register() {
     const location = useLocation()
 
     const {cart} = useSelector((state) => state.cart)
-    const {user, guestId} = useSelector((state) => state.auth)
+    const {user, guestId, loading} = useSelector((state) => state.auth)
 
     const redirect = new URLSearchParams(location.search).get('redirect') || '/'
     const isCheckoutRedirect = redirect.includes('checkout')
@@ -94,7 +94,7 @@ function Register() {
                             className='w-full rounded border p-2'
                         />
                     </div>
-                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">Sign up</button>
+                    <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:text-gray-800 transition">{loading ? 'Loading...' : 'Sign up'}</button>
                     <p className="mt-6 text-center text-sm">
                         Already have an account?
                         <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className='text-blue-500'>Login</Link>
