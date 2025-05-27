@@ -1,37 +1,67 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router'
+import { fetchProducts } from '../redux/slices/adminProductSlice'
+import { fetchAllOrders, fetchOrders } from '../redux/slices/adminOrderSlice'
 
 function AdminHomePage() {
-    const orders = [
-        {
-            _id: 2254,
-            user: {
-                name: 'John Doe'
-            },
-            totalPrice: 110,
-            status: 'Processing',
-        }
-    ]
+    const dispatch = useDispatch()
+    const { orders, totalOrders, totalSales, loading: ordersLoading, error: ordersError } = useSelector((state) => state.adminOrder)
+    const { products, loading: productsLoading, error: productsError } = useSelector((state) => state.adminProducts)
+    console.log(orders);
+    console.log(totalOrders);
+    
+
+    useEffect(() => {
+        dispatch(fetchProducts())
+        dispatch(fetchAllOrders())
+        // dispatch(fetchOrders())
+    }, [dispatch])
+    
+    // useEffect(() => {
+    //     dispatch(fetchAllOrders())
+    //     // dispatch(fetchOrders())
+    // }, [dispatch])
+
+    // const orders = [
+    //     {
+    //         _id: 2254,
+    //         user: {
+    //             name: 'John Doe'
+    //         },
+    //         totalPrice: 110,
+    //         status: 'Processing',
+    //     }
+    // ]
     return (
         <div className='max-w-7xl mx-auto p-6'>
             <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="rounded-lg p-4 shadow-md">
-                    <h2 className="text-xl font-semibold">Revenue</h2>
-                    <p className="text-2xl">$4890</p>
+            {productsLoading || ordersLoading ? (
+                <p>Loading...</p>
+            ) : productsError ? (
+                <p className="text-red-500">Error fetching products: {productsError}</p>
+            ) :
+             ordersError ? (
+                <p className="text-red-500">Error fetching orders: {ordersError}</p>
+            ) :
+             (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="rounded-lg p-4 shadow-md">
+                        <h2 className="text-xl font-semibold">Revenue</h2>
+                        <p className="text-2xl">${totalSales.toFixed(2)}</p>
+                    </div>
+                    <div className="rounded-lg p-4 shadow-md">
+                        <h2 className="text-xl font-semibold">Total Orders</h2>
+                        <p className="text-2xl">{totalOrders}</p>
+                        <Link to='/admin/orders' className='text-blue-500 hover:underline'>Manage Orders</Link>
+                    </div>
+                    <div className="rounded-lg p-4 shadow-md">
+                        <h2 className="text-xl font-semibold">Total Products</h2>
+                        <p className="text-2xl">{products.length}</p>
+                        <Link to='/admin/products' className='text-blue-500 hover:underline'>Manage Orders</Link>
+                    </div>
                 </div>
-                <div className="rounded-lg p-4 shadow-md">
-                    <h2 className="text-xl font-semibold">Total Orders</h2>
-                    <p className="text-2xl">15</p>
-                    <Link to='/admin/orders' className='text-blue-500 hover:underline'>Manage Orders</Link>
-                </div>
-                <div className="rounded-lg p-4 shadow-md">
-                    <h2 className="text-xl font-semibold">Total Products</h2>
-                    <p className="text-2xl">15</p>
-                    <Link to='/admin/products' className='text-blue-500 hover:underline'>Manage Orders</Link>
-                </div>
-            </div>
-
+            )}
             {/* recent orders table */}
             <div className="mt-6">
                 <h2 className="text-2xl font-bold mb-4">Recent Orders</h2>
@@ -52,7 +82,7 @@ function AdminHomePage() {
                                         <tr key={order._id} className='border-b cursor-pointer hover:bg-gray-50'>
                                             <td className='p-4'>{order._id}</td>
                                             <td className='p-4'>{order.user.name}</td>
-                                            <td className='p-4'>{order.totalPrice}</td>
+                                            <td className='p-4'>{order.totalPrice.toFixed(2)}</td>
                                             <td className='p-4'>{order.status}</td>
                                         </tr>
                                     ))
