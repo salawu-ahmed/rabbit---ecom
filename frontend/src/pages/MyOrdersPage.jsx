@@ -1,52 +1,71 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { fetchUserOrders } from '../redux/slices/orderSlice'
 
 function MyOrdersPage() {
-    const [orders, setOrders] = useState([])
+    // const [orders, setOrders] = useState([])
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { orders, loading, error } = useSelector((state) => state.orders)
     function handleRowClick (orderId) {
         navigate(`/order/${orderId}`)
     }
 
-    useEffect(() => {
-        // simulate fetching of orders
-        setTimeout(() => {
-            const mockOrders = [{
-                _id: 134512,
-                createdAt: new Date(),
-                shippingAddress: {
-                    city: 'Accra',
-                    country: 'Ghana',
-                },
-                orderItems: [
-                    {
-                        name: 'Ball Pen',
-                        image: '',
-                    }
-                ],
-                totalPrice: 100,
-                isPaid: false,
-            },
-            {
-                _id: 8795094,
-                createdAt: new Date(),
-                shippingAddress: {
-                    country: 'Ghana',
-                },
-                orderItems: [
-                    {
-                        name: 'Ball Pen',
-                        image: '',
-                    }
-                ],
-                totalPrice: 100,
-                isPaid: false,
-            }
-            ]
-            setOrders(mockOrders)
-        }, 1000);
+    console.log(orders);
+    
 
-    }, [])
+    useEffect(() => {
+        dispatch(fetchUserOrders())
+    }, [dispatch])
+
+    if(loading) {
+        return <p>Loading ...</p>
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>
+    }
+
+    // useEffect(() => {
+    //     // simulate fetching of orders
+    //     setTimeout(() => {
+    //         const mockOrders = [{
+    //             _id: 134512,
+    //             createdAt: new Date(),
+    //             shippingAddress: {
+    //                 city: 'Accra',
+    //                 country: 'Ghana',
+    //             },
+    //             orderItems: [
+    //                 {
+    //                     name: 'Ball Pen',
+    //                     image: '',
+    //                 }
+    //             ],
+    //             totalPrice: 100,
+    //             isPaid: false,
+    //         },
+    //         {
+    //             _id: 8795094,
+    //             createdAt: new Date(),
+    //             shippingAddress: {
+    //                 country: 'Ghana',
+    //             },
+    //             orderItems: [
+    //                 {
+    //                     name: 'Ball Pen',
+    //                     image: '',
+    //                 }
+    //             ],
+    //             totalPrice: 100,
+    //             isPaid: false,
+    //         }
+    //         ]
+    //         setOrders(mockOrders)
+    //     }, 1000);
+
+    // }, [])
 
     return (
         <div className='max-w-7xl mx-auto p-4 sm:p-6'>
@@ -74,7 +93,7 @@ function MyOrdersPage() {
                                     className='cursor-pointer border-b hover:border-gray-50'
                                     >
                                         <td className='py-2 px-2 sm:py-4 sm:px-4'>
-                                            <img src={order.orderItems.image} alt="order image" className='w-10 h-10 object-cover rounded-full sm:w-12 sm:h:12' />
+                                            <img src={order.orderItems[0].image} alt="order image" className='w-10 h-10 object-cover rounded-full sm:w-12 sm:h:12' />
                                         </td>
 
                                         <td className='py-2 px-2 sm:py-4 sm:px-4 font-medium text-gray-900 whitespace-nowrap'>
