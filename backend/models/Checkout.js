@@ -22,9 +22,11 @@ const checkOutItemSchema = new Schema({
     quantity: {
         type: Number,
         required: true
-    }
+    },
+    size: String,
+    color: String
 },
-{ _id: false })
+{ _id: false }) 
 
 const checkOutSchema = new Schema({
     user: {
@@ -36,7 +38,7 @@ const checkOutSchema = new Schema({
     shippingAddress: {
         address: {
             type: String,
-            required: true
+            // required: true
         },
         postalCode: {
             type: String,
@@ -49,6 +51,9 @@ const checkOutSchema = new Schema({
         city: {
             type: String,
             required: true
+        },
+        phoneNumber: {
+            type: Number
         }
     },
     paymentMethod: {

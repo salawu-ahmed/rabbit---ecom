@@ -1,30 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import PaypalButton from './PaypalButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { createCheckout } from '../../redux/slices/checkoutSlice'
+import axios from 'axios'
 
-const cart = {
-    products: [
-        {
-            name: 'Stylish Jacket',
-            color: 'Red',
-            size: 'M',
-            price: 124,
-            image: 'https://picsum.photos/150?random=1'
-        },
-        {
-            name: 'Casual Sneakers',
-            color: 'Red',
-            size: 'M',
-            price: 70,
-            image: 'https://picsum.photos/150?random=2'
-        },
-    ],
-    totalPrice: 195,
-}
+// const cart = {
+//     products: [
+//         {
+//             name: 'Stylish Jacket',
+//             color: 'Red',
+//             size: 'M',
+//             price: 124,
+//             image: 'https://picsum.photos/150?random=1'
+//         },
+//         {
+//             name: 'Casual Sneakers',
+//             color: 'Red',
+//             size: 'M',
+//             price: 70,
+//             image: 'https://picsum.photos/150?random=2'
+//         },
+//     ],
+//     totalPrice: 195,
+// }
+
+
+
 function Checkout() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.auth)
+    const { cart, loading, error } = useSelector((state) => state.cart)
+
     const [checkoutId, setChekoutId] = useState(null)
-    const [shippingAdress, setShippingAddress] = useState({
+    const [shippingAddress, setShippingAddress] = useState({
         firstName: '',
         lastName: '',
         address: '',
@@ -34,14 +44,75 @@ function Checkout() {
         phoneNumber: ''
     })
 
-    function handleCreateCheckout(e) {
+    useEffect(() => {
+        if (!cart || !cart.products || cart.products.length === 0) {
+            navigate('/')
+        }
+    }, [cart, navigate])
+
+    async function handleCreateCheckout(e) {
         e.preventDefault()
-        setChekoutId(123)
+        if (cart && cart.products.length > 0) {
+            const res = await dispatch(createCheckout({
+                checkOutItems: cart.products,
+                shippingAddress: shippingAddress,
+                paymentMethod: 'Paypal',
+                totalPrice: cart.totalPrice
+            }))
+            if (res.payload && res.payload._id) {
+                setChekoutId(res.payload._id)
+                console.log(checkoutId);
+                console.log('code runned');
+
+            }
+            console.log(res);
+        }
     }
 
-    function handlePaymentSuccess(details) {
-        console.log(details);
-        navigate('/order-confirmation')
+    async function handlePaymentSuccess(details) {
+        try {
+            const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
+                { paymentStatus: 'paid', paymentDetails: details },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('userToken')}`
+                    }
+                }
+            )
+            await handleFinalizeCheckout(checkoutId)
+        } catch (error) {
+            console.error(error);
+
+        }
+    }
+
+    async function handleFinalizeCheckout(checkoutId) {
+        try {
+            const res = await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalise`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('userToken')}`
+                    }
+                }
+            )
+            navigate('/order-confirmation')
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    if (loading) {
+        return <p>Loading cart...</p>
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>
+    }
+
+    if (!cart || !cart.products || cart.products.length === 0) {
+        return <p>Your cart is empty</p>
     }
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter'>
@@ -59,7 +130,7 @@ function Checkout() {
                             type="email"
                             className='w-full p-4 border rounded'
                             disabled
-                            value='johndoe@gmail.com'
+                            value={user ? user.email : ''}
                         />
                     </div>
                     <h3 className="text-lg mb-4">Delivery</h3>
@@ -73,10 +144,10 @@ function Checkout() {
                                 type="text"
                                 className="w-full border rounded p-2"
                                 required
-                                value={shippingAdress.firstName}
+                                value={shippingAddress.firstName}
                                 onChange={(e) =>
                                     setShippingAddress({
-                                        ...shippingAdress,
+                                        ...shippingAddress,
                                         firstName: e.target.value
                                     })
                                 }
@@ -92,10 +163,10 @@ function Checkout() {
                                 type="text"
                                 className="w-full border rounded p-2"
                                 required
-                                value={shippingAdress.lastName}
+                                value={shippingAddress.lastName}
                                 onChange={(e) =>
                                     setShippingAddress({
-                                        ...shippingAdress,
+                                        ...shippingAddress,
                                         lastName: e.target.value
                                     })
                                 }
@@ -110,12 +181,11 @@ function Checkout() {
                         >Address</label>
                         <input
                             type="text"
-                            value={shippingAdress.address}
+                            value={shippingAddress.address}
                             onChange={(e) =>
                                 setShippingAddress({
-                                    ...shippingAdress,
+                                    ...shippingAddress,
                                     address: e.target.value
-
                                 })
                             }
                             required
@@ -133,10 +203,10 @@ function Checkout() {
                                 type="text"
                                 className="w-full border rounded p-2"
                                 required
-                                value={shippingAdress.city}
+                                value={shippingAddress.city}
                                 onChange={(e) =>
                                     setShippingAddress({
-                                        ...shippingAdress,
+                                        ...shippingAddress,
                                         city: e.target.value
                                     })
                                 }
@@ -152,10 +222,10 @@ function Checkout() {
                                 type="text"
                                 className="w-full border rounded p-2"
                                 required
-                                value={shippingAdress.postalCode}
+                                value={shippingAddress.postalCode}
                                 onChange={(e) =>
                                     setShippingAddress({
-                                        ...shippingAdress,
+                                        ...shippingAddress,
                                         postalCode: e.target.value
                                     })
                                 }
@@ -170,10 +240,10 @@ function Checkout() {
                         >Country</label>
                         <input
                             type="text"
-                            value={shippingAdress.country}
+                            value={shippingAddress.country}
                             onChange={(e) =>
                                 setShippingAddress({
-                                    ...shippingAdress,
+                                    ...shippingAddress,
                                     country: e.target.value
 
                                 })
@@ -190,10 +260,10 @@ function Checkout() {
                         >Phone Number</label>
                         <input
                             type="text"
-                            value={shippingAdress.phoneNumber}
+                            value={shippingAddress.phoneNumber}
                             onChange={(e) =>
                                 setShippingAddress({
-                                    ...shippingAdress,
+                                    ...shippingAddress,
                                     phoneNumber: e.target.value
 
                                 })
@@ -210,7 +280,7 @@ function Checkout() {
                                 <h3 className="text-lg mb-4">Pay with Paypal</h3>
                                 {/* paypal component */}
                                 <PaypalButton
-                                    amount={100}
+                                    amount={cart.totalPrice}
                                     onSuccess={handlePaymentSuccess}
                                     onError={(err) => alert('Payment Failed. Try again.')}
                                 />

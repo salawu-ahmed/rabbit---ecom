@@ -13,6 +13,8 @@ const router = express.Router()
 // @access Private
 router.post('/', protect, async function (req, res) {
     const { checkOutItems, shippingAddress, paymentMethod, totalPrice } = req.body
+    console.log(shippingAddress);
+    
 
     if (!checkOutItems || checkOutItems.length === 0) {
         return res.status(400).json({
@@ -22,15 +24,24 @@ router.post('/', protect, async function (req, res) {
 
     try {
         // create a new checkout session 
-        const newCheckout = await Checkout.create({
+        
+        const newCheckout =  await Checkout.create({
             user: req.user._id,
             checkOutItems: checkOutItems,
-            shippingAddress,
+            shippingAddress: {
+                address: shippingAddress.address,
+                country: shippingAddress.country,
+                city: shippingAddress.city,
+                postalCode: shippingAddress.postalCode,
+                phoneNumber: shippingAddress.phoneNumber
+            },
             paymentMethod,
             totalPrice,
             paymentStatus: 'Pending',
             isPaid: false,
         })
+        console.log(newCheckout);
+        
         console.log(`checkout created for user: ${req.user._id}`);
         res.status(201).json(newCheckout)
     } catch (error) {
