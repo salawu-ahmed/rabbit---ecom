@@ -1,35 +1,55 @@
-import React from 'react'
-const checkout = {
-    _id: 12334,
-    createdAt: new Date(),
-    checkoutItems: [
-        {
-            productId: '1',
-            name: 'Stylish Jackets',
-            color: 'black',
-            size: 'M',
-            price: 150,
-            quantity: 1,
-            image: 'https://picsum.photos/150?random=6'
-        },
-        {
-            productId: '1',
-            name: 'T-Shirts',
-            color: 'black',
-            size: 'M',
-            price: 150,
-            quantity: 1,
-            image: 'https://picsum.photos/150?random=9'
-        }
-    ],
-    shippingAddress: {
-        address: '123 Fashion Street',
-        city: 'New York',
-        country: 'USA',
-    }
-}
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { clearCart } from '../redux/slices/cartSlice'
+// const checkout = {
+//     _id: 12334,
+//     createdAt: new Date(),
+//     checkoutItems: [
+//         {
+//             productId: '1',
+//             name: 'Stylish Jackets',
+//             color: 'black',
+//             size: 'M',
+//             price: 150,
+//             quantity: 1,
+//             image: 'https://picsum.photos/150?random=6'
+//         },
+//         {
+//             productId: '1',
+//             name: 'T-Shirts',
+//             color: 'black',
+//             size: 'M',
+//             price: 150,
+//             quantity: 1,
+//             image: 'https://picsum.photos/150?random=9'
+//         }
+//     ],
+//     shippingAddress: {
+//         address: '123 Fashion Street',
+//         city: 'New York',
+//         country: 'USA',
+//     }
+// }
 
 function OrderConfirmationPage() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { checkout } = useSelector((state) => state.checkout)
+    console.log(checkout);
+    
+
+    // clear the cart when the order is confirmed 
+    useEffect(() => {
+      if(checkout && checkout._id){
+        dispatch(clearCart())
+        localStorage.removeItem('cart')
+      } else {
+        navigate('/my-orders')
+      }
+    
+    }, [checkout, dispatch, navigate])
+    
     function calculateEstimatedDelivery(createdAt) {
         const orderDate = new Date(createdAt)
         orderDate.setDate(orderDate.getDate() + 10)
@@ -54,7 +74,7 @@ function OrderConfirmationPage() {
                     {/* Ordered Items */}
                     <div className="mb-20">
                         {
-                            checkout.checkoutItems.map((item) => (
+                            checkout.checkOutItems?.map((item) => (
                                 <div
                                     key={item.productId}
                                     className='flex items-center mb-4'
