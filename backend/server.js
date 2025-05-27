@@ -40,5 +40,7 @@ app.use('/api/admin/products', productsAdminRoutes)
 app.use('/api/admin/orders', ordersAdminRoutes)
 
 
-app.listen(process.env.port, () => console.log(`Server running on http://localhost:${process.env.port}`)
-)
+// app.listen(process.env.port, () => console.log(`Server running on http://localhost:${process.env.port}`)
+//)
+
+module.exports = app
