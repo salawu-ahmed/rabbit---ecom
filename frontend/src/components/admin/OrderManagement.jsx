@@ -1,24 +1,52 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import { fetchAllOrders, updateOrderStatus } from '../../redux/slices/adminOrderSlice'
 
 function OrderManagement() {
-    const orders = [
-        {
-            _id: 5,
-            user: {
-                name: 'john doe'
-            },
-            totalPrice: 150,
-            status: 'Processing'
+    // const orders = [
+    //     {
+    //         _id: 5,
+    //         user: {
+    //             name: 'john doe'
+    //         },
+    //         totalPrice: 150,
+    //         status: 'Processing'
+    //     }
+    // ]
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const {user} = useSelector((state) => state.auth)
+    const { orders, loading, error } = useSelector((state) => state.adminOrder)
+
+    useEffect(() => {
+        if(!user || user.role !== 'admin') {
+            navigate('/')
+        } else {
+            dispatch(fetchAllOrders())
         }
-    ]
+    }, [dispatch, user, navigate])
 
     function handleStatusChange(orderId, status) {
-        console.log({
+        dispatch(updateOrderStatus({
             id: orderId,
             status: status
-        });
+        }))
 
+        // console.log({
+        //     id: orderId,
+        //     status: status
+        // });
     }
+
+    if (loading) {
+        return <p>Loading...</p>
+    }
+
+    if(error) {
+        return <p>Error: {error}</p> 
+    }
+
     return (
         <div className='max-w-7xl mx-auto p-6'>
             <h2 className="font-bold mb-6 text-2xl">
@@ -47,13 +75,13 @@ function OrderManagement() {
                                             className="font-medium p-4 tex-gray-900 whitespace-nowrap">#{order._id}
                                         </td>
                                         <td className="p-4">{order.user.name}</td>
-                                        <td className="p-4">{order.totalPrice}</td>
+                                        <td className="p-4">{order.totalPrice.toFixed(2)}</td>
                                         <td className="p-4">
                                             <select
                                                 name="status"
                                                 id=""
                                                 value={order.status}
-                                                onChange={() => handleStatusChange(order.id, e.target.value)}
+                                                onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                                 className='text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-gray-50 text-sm border border-gray-300 block p-2.5'
                                             >
                                                 <option value="Processing">Processing</option>

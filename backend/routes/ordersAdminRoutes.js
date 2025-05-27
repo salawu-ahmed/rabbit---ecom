@@ -24,11 +24,13 @@ router.get('/', protect, admin, async function(req, res) {
 router.put('/:id', protect, admin, async function(req, res){
     const { id } = req.params
     const { status } = req.body
+    console.log(id);
+    
     try {
         const order = await Order.findById(id)
         if(order) {
             order.status = status || order.status
-            order.isDelivered = status === "Delivered" ? true : order.isDelivered
+            order.isDelivered = status === "Delivered" ? status : order.isDelivered
             order.deliveredAt = status === "Delivered" ? Date.now() : order.deliveredAt
 
             const updatedOrder = await order.save()
