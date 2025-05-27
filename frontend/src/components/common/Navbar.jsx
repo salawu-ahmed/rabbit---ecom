@@ -15,6 +15,7 @@ export default function Navbar() {
     const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false)
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
+    const {user} = useSelector((state) => state.auth)
     const { cart } = useSelector((state) => state.cart)
     const cartItemCount = cart?.products?.reduce(
         (totalItems, product) => totalItems + product.quantity, 0
@@ -74,9 +75,15 @@ export default function Navbar() {
 
                 {/* right */}
                 <div className="flex items-center space-x-4">
-                    <Link to='/admin' className='rounded block bg-black px-2 text-sm text-white'>
-                        admin
-                    </Link>
+                    {/* show admin button only if the user is an admin */}
+                    {
+                        user && user.role === 'admin' && (
+                        <Link to='/admin' className='rounded block bg-black px-2 text-sm text-white'>
+                            admin
+                        </Link>
+                        )
+                    }
+
                     <Link className='hover:text-black' to='/profile'>
                         <HiOutlineUser size={25} className='text-gray-700' />
                     </Link>
