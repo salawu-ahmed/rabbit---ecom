@@ -12,6 +12,7 @@ const subscriberRoutes = require('./routes/subscriberRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const productsAdminRoutes = require('./routes/productAdminRoutes')
 const ordersAdminRoutes = require('./routes/ordersAdminRoutes')
+const serverless = require('serverless-http')
 
 const app = express()
 app.use(express.json())
@@ -43,4 +44,4 @@ app.use('/api/admin/orders', ordersAdminRoutes)
 // app.listen(process.env.port, () => console.log(`Server running on http://localhost:${process.env.port}`)
 //)
 
-module.exports = app
+module.exports = serverless(app)
