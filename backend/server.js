@@ -23,9 +23,12 @@ dotenv.config()
 connectDB()
 
 
+// Default favicon
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // routes
 app.get('/', (req, res) => {
-    res.json('Welcome to the Rabbit App')
+    res.send('Welcome to the Rabbit App')
 })
 app.use('/api/users', userRoutes)
 app.use('/api/products', productRoutes)
