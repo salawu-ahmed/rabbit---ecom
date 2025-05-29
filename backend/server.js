@@ -25,7 +25,7 @@ connectDB()
 
 // routes
 app.get('/', (req, res) => {
-    res.send('Welcome to the Rabbit App')
+    res.json('Welcome to the Rabbit App')
 })
 app.use('/api/users', userRoutes)
 app.use('/api/products', productRoutes)
