@@ -47,4 +47,4 @@ app.use('/api/admin/orders', ordersAdminRoutes)
 // app.listen(process.env.port, () => console.log(`Server running on http://localhost:${process.env.port}`)
 //)
 
-module.exports = serverless(app)
+module.exports = app
